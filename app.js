@@ -14,16 +14,16 @@ app.get("/", function (request, response) {
 });
 
 app.post("/upload", function (request, response){
-    console.log(request.files.fileName.type);
-    console.log(request.files.fileName.path);
+    console.log("Path: "+request.files.fileName.path);
     var type = request.files.fileName.type;
+    console.log("Type: "+type);
     if(type != 'application/zip'){
     	response.render("upload");
     	console.log("NOT ZIP");
     	response.end();
     }
     else{
-    	// fs.createReadStream(request.files.fileName.path).pipe(unzip.Extract({ path: 'output/' }));
+    	fs.createReadStream(request.files.fileName.path).pipe(unzip.Extract({ path: 'output/' }));
     	console.log("ZIP");
     }
     response.end();
