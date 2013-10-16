@@ -1,5 +1,3 @@
 node_modules
-output/OauthApp
-output/__MACOSX
-output/bootstrap
-output/bootstrap-3.0.0
+output
+test
