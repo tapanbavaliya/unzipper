@@ -1,10 +1,38 @@
-doctype 5
 html
-    head
-        title Upload Form
-    body
-        h1 Upload File
-        | #{error}
-        form(method="POST", action="/upload", enctype="multipart/form-data")
-            input(type="file", name="fileName")
-            input(type="submit", value="Upload")
+  head
+    title File Upload
+    script(type='text/javascript')
+      function validateZip() {
+      var file_name = document.getElementById("file").value;
+      var Extension = file_name.substring(file_name.lastIndexOf('.') + 1).toLowerCase();
+      var submit = document.getElementById("submit");
+      if( Extension == "zip")
+      {
+      submit.disabled = false;
+      document.getElementById("error").innerHTML = "";
+      }
+      else
+      {
+      submit.disabled = true;
+      document.getElementById("error").innerHTML = "Can not upload other than .zip files.";
+      }
+      }
+      function validateForm()
+      {
+      var form=document.forms["Form"]["file"].value;
+      if (form==null || form=="")
+      {
+      alert("Please select one file.");
+      return false;
+      }
+      }
+  body
+    div
+      h2 File Upload
+      form(action='upload_file', name='Form', method='post', enctype='multipart/form-data', onsubmit='return validateForm()')
+        label(for='file') Filename:
+        input#file(type='file', name='file', onchange='validateZip()')
+        br
+        input#submit(type='submit', name='submit', value='Submit')
+        br
+        label#error(style='color: red;')
