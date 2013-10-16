@@ -1,0 +1,37 @@
+{
+  "name": "unzipper",
+  "version": "0.0.0",
+  "description": "Node based unzipper",
+  "main": "app.js",
+  "dependencies": {
+    "connect": "~2.8.4",
+    "connect-redis": "~1.4.5",
+    "ejs": "~0.8.4",
+    "express": "~3.2.6",
+    "express-sessions": "~1.0.5",
+    "jade": "~0.31.2",
+    "mongoose": "~3.6.13",
+    "passport": "~0.1.17",
+    "passport-twitter": "~0.1.5",
+    "redis": "~0.8.4",
+    "stylus": "~0.32.1",
+    "request": "~2.21.0",
+    "mongodb": "~1.3.11"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meet2me/unzipper"
+  },
+  "keywords": [
+    "unzipper"
+  ],
+  "author": "meet2me",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/meet2me/unzipper/issues"
+  }
+}
