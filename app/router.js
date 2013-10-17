@@ -56,10 +56,11 @@ module.exports = function(app) {
   });
 
   app.post('/register', function(req, res){
+    console.log("Password:"+req.param('pass'));
     DB.addNewAccount({
       name  : req.param('name'),
-      email   : req.param('email'),
-      pass  : req.param('pass'),
+      email : req.param('email'),
+      pass  : req.param('pass')
     }, function(err){
       if (err){
         res.send(err, 400);
@@ -87,6 +88,8 @@ module.exports = function(app) {
 
       var file = getDirectoryName(request.files.fileName.name);
       console.log('File:'+file);
+
+      //Create a user's directory : If present , will remain as it is.
       fs.mkdirsSync('output/user');
       var main = __dirname+'/output';
       console.log(main);

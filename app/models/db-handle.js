@@ -53,11 +53,13 @@ exports.manualLogin = function(email, pass, callback)
 exports.addNewAccount = function(data, callback)
 {
 
-  accounts.findOne({email:data.email}, function(data, err){
-    if(err){
+  accounts.findOne({email:data.email}, function(err,item){
+    console.log("Email:"+data.email);
+    if(item){
       callback('Error: not unique email');
     }
     else{
+      console.log(data.pass);
       saltAndHash(data.pass, function(hash){
         data.pass = hash;
         data.date = moment().format('MMMM Do YYYY, h:mm:ss a');
