@@ -12,11 +12,10 @@ module.exports = function(app){
   app.configure(function(){
     app.set('port', process.env.PORT || 3000);
     app.set('views', __dirname + '/views');
-    console.log("Path:"+__dirname + '/views');
     app.set('view engine', 'jade');
     app.set('view options', {layout: false});
-    // app.use(express.favicon());
-    // app.use(express.logger('dev'));
+    app.use(express.favicon());
+    app.use(express.logger('dev'));
     app.use(express.cookieParser());
     app.use(express.session({store: sStore,secret: '1234567890QWERTY'}));
     
