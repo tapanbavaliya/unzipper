@@ -1,6 +1,8 @@
 var fs = require('fs-extra');
 var unzip = require('unzip');
 
+var DB = require('./models/db-handle');
+
 module.exports = function(app) {
 
 // main login page //
@@ -15,6 +17,20 @@ module.exports = function(app) {
 
 	app.get("/register", function(req, res){
 		res.render("register");
+	});
+
+	app.post('/register', function(req, res){
+		DB.addNewAccount({
+			name 	: req.param('name'),
+			email 	: req.param('email'),
+			pass	: req.param('pass'),
+		}, function(err){
+			if (err){
+				res.send(err, 400);
+			}	else{
+				res.send('ok', 200);
+			}
+		});
 	});
 
 	app.post("/upload", function (request, response){
