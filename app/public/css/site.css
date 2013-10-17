@@ -7,6 +7,7 @@
 .form-signin {
   max-width: 330px;
   border: 1px solid #AAA;
+  border-radius: 5px;
   padding: 15px;
   margin: 0 auto;
 }
@@ -27,6 +28,7 @@
 .form-signup {
   max-width: 330px;
   border: 1px solid #AAA;
+  border-radius: 5px;
   padding: 15px;
   margin: 0 auto;
 }
