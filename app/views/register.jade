@@ -5,13 +5,14 @@ html
     title Register
   body.signBody
     .container
-      form.form-signup(role='form')
+      form.form-signup(role='form',method='post')
         h2.form-signup-heading Create an Account
-        input.form-control(type='text', placeholder='User name', autofocus='')
         br
-        input.form-control(type='text', placeholder='Email address')
+        input.form-control(type='text', placeholder='User name', autofocus='', name='name')
         br
-        input.form-control(type='password', placeholder='Password')
+        input.form-control(type='text', placeholder='Email address', name='email')
+        br
+        input.form-control(type='password', placeholder='Password', name='pass')
         br
         button.btn.btn-lg.btn-primary.btn-block(type='submit') Create Account
         .bottomline

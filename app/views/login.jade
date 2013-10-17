@@ -5,12 +5,11 @@ html
     title Login
   body.signBody
     .container
-      form.form-signin(role='form')
+      form.form-signin(role='form', method='POST', action='/')
         h2.form-signin-heading Please sign in
-        input.form-control(type='text', placeholder='Email address', autofocus='')
         br
-        input.form-control(type='password', placeholder='Password')
-        br
+        input.form-control(type='text', placeholder='Email address', autofocus='', name='email')
+        input.form-control(type='password', placeholder='Password', name='pass')
         label.checkbox
           input(type='checkbox', value='remember-me')
           | Remember me
