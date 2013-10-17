@@ -23,7 +23,7 @@ module.exports = function(app){
     app.use(express.methodOverride());
     app.use(require('stylus').middleware(__dirname + '/public'));
     console.log(__dirname + '/public');
-    // app.use(express.static(__dirname, '/public'));
+    app.use(express.static(__dirname, '/public'));
     app.use(app.router);
   });
 };

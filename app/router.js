@@ -1,6 +1,8 @@
 var fs = require('fs-extra');
 var unzip = require('unzip');
 
+var DB = require('./models/db-handle');
+
 module.exports = function(app) {
 
 // main login page //
