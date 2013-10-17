@@ -1,0 +1,18 @@
+html
+  head
+    link(href='//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css', rel='stylesheet')
+    title Login
+    link(href='../public/css/site.css'  rel='stylesheet')
+  body.signBody
+    .container
+      form.form-signin(role='form')
+        h2.form-signin-heading Please sign in
+        input.form-control(type='text', placeholder='Email address', autofocus='')
+        input.form-control(type='password', placeholder='Password')
+        label.checkbox
+          input(type='checkbox', value='remember-me')
+          | Remember me
+        button.btn.btn-lg.btn-primary.btn-block(type='submit') Sign in
+        .bottomline
+        .pagination
+          a.pull-right(href='/register') Create an Account

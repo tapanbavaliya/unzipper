@@ -9,6 +9,14 @@ module.exports = function(app) {
 		res.render('upload');
 	});
 
+	app.get("/login", function(req, res){
+		res.render("login");
+	});
+
+	app.get("/register", function(req, res){
+		res.render("register");
+	});
+
 	app.post("/upload", function (request, response){
 	    console.log("Path: "+request.files.fileName.path);
 	    var path = request.files.fileName.path;
