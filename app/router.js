@@ -7,74 +7,99 @@ module.exports = function(app) {
 
 // main login page //
 
-	app.get("/", function(req, res){
-		res.render('login');
-	});
+  app.get('/', function(req, res){
+    console.log("Session:"+req.cookies.email)
+    if (req.cookies.email == undefined || req.cookies.pass == undefined){
+      res.render('login', { title: 'Login' });
+    }
+    else{
+      DB.autoLogin(req.cookies.email, req.cookies.pass, function(data){
+        if (data != null){
+          req.session.email = data;
+          res.redirect('/upload');
+        }
+        else{
+          res.render('login', { title: 'Login' });
+        }
+      });
+    }
+  });
 
-	app.get("/upload", function(req, res){
-		res.render("upload");
-	});
+  app.post('/', function(req, res){
+    DB.manualLogin(req.param('email'), req.param('pass'), function(err, data){
+      console.log('Inside');
+      if (!data){
+        res.send(err, 400);
+      } else{
+          req.session.email = data;
+        if (req.param('remember-me') == 'true'){
+          res.cookie('email', data.email, { maxAge: 900000 });
+          res.cookie('pass', data.pass, { maxAge: 900000 });
+        }
+        // res.send(data, 200);
+        res.render('upload');
+      }
+    });
+  });
 
-	app.get("/register", function(req, res){
-		res.render("register");
-	});
+  app.get('/upload', function(req,res){
+    res.render('upload');
+  });
 
-	app.post('/register', function(req, res){
-		DB.addNewAccount({
-			name 	: req.param('name'),
-			email 	: req.param('email'),
-			pass	: req.param('pass'),
-		}, function(err){
-			if (err){
-				res.send(err, 400);
-			}	else{
-				res.render('login',{msg:"success"});
-			}
-		});
-	});
+  app.get('/', function(req,res){
+    res.render('login', { title: 'Login' });
+  });
 
-	app.post("/upload", function (request, response){
-	    console.log("Path: "+request.files.fileName.path);
-	    var path = request.files.fileName.path;
-	    var type = request.files.fileName.type;
-	    console.log("Name:"+request.files.fileName.name);
-	    console.log("Type: "+type);
-	    if(type != 'application/zip'){
-	    	response.render("upload");
-	    	console.log("NOT ZIP");
-	    	response.end();
-	    }
-	    else{
-	    	console.log("Its a ZIP");
+  app.get('/register', function(req, res){
+    res.render('register');
+  });
 
-	    	fs.createReadStream(request.files.fileName.path).pipe(unzip.Extract({ path: 'output/' }));
-	    	// .on('error', function (err) { console.log('error', err); })
-	    	// .on('close', function () { console.log('closed'); });
+  app.post('/register', function(req, res){
+    DB.addNewAccount({
+      name  : req.param('name'),
+      email   : req.param('email'),
+      pass  : req.param('pass'),
+    }, function(err){
+      if (err){
+        res.send(err, 400);
+      } else{
+        res.send('A/c created', 200);
+      }
+    });
+  });
 
-	    	var file = getDirectoryName(request.files.fileName.name);
-	    	console.log("File:"+file);
-	    	fs.mkdirsSync('output/user');
-	    	var main = __dirname+'/output';
-	    	console.log(main);
+  app.post('/upload', function (request, response){
+    console.log('Path: '+request.files.fileName.path);
+    var path = request.files.fileName.path;
+    var type = request.files.fileName.type;
+    console.log('Name:'+request.files.fileName.name);
+    console.log('Type: '+type);
+    if(type != 'application/zip'){
+      response.render('upload');
+      console.log('NOT ZIP');
+      response.end();
+    }
+    else{
+      console.log('Its a ZIP');
 
-	    	var dir = __dirname+'/output/'+file;
-	    	console.log("Dir: "+dir+'/*');
+      fs.createReadStream(request.files.fileName.path).pipe(unzip.Extract({ path: 'output/' }));
 
-	  		//fs.copy(dir+'/', __dirname+'/test', function(err){
-			//   if (err) return console.error(err);
-			//   console.log("success!")
-			// });
+      var file = getDirectoryName(request.files.fileName.name);
+      console.log('File:'+file);
+      fs.mkdirsSync('output/user');
+      var main = __dirname+'/output';
+      console.log(main);
 
-			fs.copySync(dir+'/', __dirname+'/test');
+      var dir = __dirname+'/output/'+file;
+      // fs.copySync(dir+'/', __dirname+'/test');
+      // fs.removeSync(dir+'/*');
+      // fs.removeSync(dir);
+      response.end();
+    }
+  });
 
-			// fs.removeSync(dir+'/*');
-			// fs.removeSync(dir);
-	    	response.end();
-	    }
-	});
-
-	function getDirectoryName(filename) {
-	    var i = filename.lastIndexOf('.');
-	    return (i < 0) ? '' : filename.substr(0,i);
-	}
+  function getDirectoryName(filename) {
+      var i = filename.lastIndexOf('.');
+      return (i < 0) ? '' : filename.substr(0,i);
+  }
 }
