@@ -7,7 +7,6 @@ module.exports = function(app) {
 
 // main login page //
 
-
   app.get('/', function(req, res){
     console.log("Session:"+req.cookies.email)
     if (req.cookies.email == undefined || req.cookies.pass == undefined){
@@ -47,7 +46,7 @@ module.exports = function(app) {
     res.render('upload');
   });
 
-  app.get('/login', function(req,res){
+  app.get('/', function(req,res){
     res.render('login', { title: 'Login' });
   });
 
@@ -106,6 +105,4 @@ module.exports = function(app) {
       var i = filename.lastIndexOf('.');
       return (i < 0) ? '' : filename.substr(0,i);
   }
-
-	
 }
