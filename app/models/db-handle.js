@@ -52,18 +52,24 @@ exports.manualLogin = function(email, pass, callback)
 
 exports.addNewAccount = function(data, callback)
 {
-
-  accounts.findOne({email:data.email}, function(err,item){
-    console.log("Email:"+data.email);
-    if(item){
-      callback('Error: not unique email');
-    }
+  accounts.findOne({name:data.name}, function(e, o) {
+    if (o){
+      callback('username-taken');
+    } 
     else{
-      console.log(data.pass);
-      saltAndHash(data.pass, function(hash){
-        data.pass = hash;
-        data.date = moment().format('MMMM Do YYYY, h:mm:ss a');
-        accounts.insert(data, {safe: true}, callback);
+      accounts.findOne({email:data.email}, function(err,item){
+        console.log("Email:"+data.email);
+        if(item){
+          callback('Error: not unique email');
+        }
+        else{
+          console.log(data.pass);
+          saltAndHash(data.pass, function(hash){
+            data.pass = hash;
+            data.date = moment().format('MMMM Do YYYY, h:mm:ss a');
+            accounts.insert(data, {safe: true}, callback);
+          });
+        }
       });
     }
   });

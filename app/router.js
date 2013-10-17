@@ -89,7 +89,7 @@ module.exports = function(app) {
       console.log('File:'+file);
 
       //Create a user's directory : If present , will remain as it is.
-      fs.mkdirsSync('output/user');
+      // fs.mkdirsSync('output/userName');
       var main = __dirname+'/output';
       console.log(main);
 
