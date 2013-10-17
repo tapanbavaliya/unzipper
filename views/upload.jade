@@ -1,7 +1,7 @@
 html
   head
     title File Upload
-    script(type='text/javascript')
+    script.
       function validateZip() {
       var file_name = document.getElementById("file").value;
       var Extension = file_name.substring(file_name.lastIndexOf('.') + 1).toLowerCase();
@@ -29,9 +29,9 @@ html
   body
     div
       h2 File Upload
-      form(action='upload_file', name='Form', method='post', enctype='multipart/form-data', onsubmit='return validateForm()')
+      form(action='upload', name='Form', method='post', enctype='multipart/form-data', onsubmit='return validateForm()')
         label(for='file') Filename:
-        input#file(type='file', name='file', onchange='validateZip()')
+        input#file(type='file', name='fileName', onchange='validateZip()')
         br
         input#submit(type='submit', name='submit', value='Submit')
         br
