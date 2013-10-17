@@ -7,11 +7,10 @@ var express = require('express');
 var unzip = require('unzip');
 
 var app = express();
-require('./appConfiguration')(app);
+require('./app/appConfig')(app);
 
-app.get("/", function (request, response) {
-    response.render("upload.jade");
-});
+require('./app/router')(app);
+
 
 app.post("/upload", function (request, response){
     console.log("Path: "+request.files.fileName.path);
