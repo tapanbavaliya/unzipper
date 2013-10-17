@@ -8,11 +8,11 @@ module.exports = function(app) {
 // main login page //
 
 	app.get("/", function(req, res){
-		res.render('upload');
+		res.render('login');
 	});
 
-	app.get("/login", function(req, res){
-		res.render("login");
+	app.get("/upload", function(req, res){
+		res.render("upload");
 	});
 
 	app.get("/register", function(req, res){
@@ -28,7 +28,7 @@ module.exports = function(app) {
 			if (err){
 				res.send(err, 400);
 			}	else{
-				res.send('ok', 200);
+				res.render('login',{msg:"success"});
 			}
 		});
 	});

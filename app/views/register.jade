@@ -8,13 +8,13 @@ html
       form.form-signup(role='form',method='post')
         h2.form-signup-heading Create an Account
         br
-        input.form-control(type='text', placeholder='User name', autofocus='', name='name')
+        input.form-control(type='text', id='name',placeholder='User name', autofocus='', name='name', required='required')
         br
-        input.form-control(type='text', placeholder='Email address', name='email')
+        input.form-control(type='email', placeholder='Email address', name='email',required='required', onblur='validate(this.id)')
         br
-        input.form-control(type='password', placeholder='Password', name='pass')
+        input.form-control(type='password', placeholder='Password', name='pass',required='required')
         br
         button.btn.btn-lg.btn-primary.btn-block(type='submit') Create Account
         .bottomline
         .pagination
-          a.pull-right(href='login') Sign In
+          a.pull-right(href='/') Sign In
