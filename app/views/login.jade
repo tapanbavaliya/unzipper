@@ -9,10 +9,11 @@ html
         h2.form-signin-heading Please sign in
         br
         input.form-control(type='text', placeholder='Email address', autofocus='', name='email',required='required')
+        br
         input.form-control(type='password', placeholder='Password', name='pass',required='required')
-
+        br
         label.checkbox
-          input(type='checkbox', value='remember-me')
+          input(type='checkbox', value='true', name='remember-me')
           | Remember me
         button.btn.btn-lg.btn-primary.btn-block(type='submit') Sign in
         .bottomline

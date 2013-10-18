@@ -17,7 +17,10 @@ module.exports = function(app){
     app.use(express.favicon());
     app.use(express.logger('dev'));
     app.use(express.cookieParser());
-    app.use(express.session({store: sStore,secret: '1234567890QWERTY'}));
+    app.use(express.session({ secret: '1234567890QWERTY' },
+                            {cookie: { maxAge: 1000 * 60 * 24 }
+                             }));
+    // app.use(express.session({store: sStore,secret: '1234567890QWERTY'}));
     
     app.use(express.bodyParser());
     app.use(express.methodOverride());

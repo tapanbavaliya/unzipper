@@ -8,8 +8,9 @@ module.exports = function(app) {
 // main login page //
 
   app.get('/', function(req, res){
-    console.log("Session:"+req.cookies.email)
-    if (req.cookies.email == undefined || req.cookies.pass == undefined){
+
+    console.log("Session:"+req.cookies.user);
+    if (req.cookies.email == undefined || req.cookies.pass == undefined ){
       res.render('login', { title: 'Login' });
     }
     else{
@@ -27,11 +28,13 @@ module.exports = function(app) {
 
   app.post('/', function(req, res){
     DB.manualLogin(req.param('email'), req.param('pass'), function(err, data){
-      console.log('Inside');
+      console.log('Inside manual login');
       if (!data){
         res.send(err, 400);
       } else{
-          req.session.email = data;
+        console.log(data);
+          req.session.email = data.email;
+          console.log(req.param('remember-me'));
         if (req.param('remember-me') == 'true'){
           res.cookie('email', data.email, { maxAge: 900000 });
           res.cookie('pass', data.pass, { maxAge: 900000 });
@@ -43,7 +46,12 @@ module.exports = function(app) {
   });
 
   app.get('/upload', function(req,res){
-    res.render('upload');
+    if (req.session.email == null){
+      res.redirect('/');
+    }
+    else{
+      res.render('upload');
+    }
   });
 
   app.get('/', function(req,res){
