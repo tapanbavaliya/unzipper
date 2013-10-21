@@ -78,6 +78,17 @@ exports.addNewAccount = function(data, callback)
   });
 }
 
+exports.accountInfo = function(email, callback)
+{
+  accounts.findOne({email:email}, function(err, item){
+    if(err)
+    {
+      console.log('Error : '+err);
+    }
+    callback(null, item);
+  });
+}
+
 exports.getAccountByEmail = function(email, callback)
 {
   accounts.findOne({email:email}, function(e, o){ callback(o); });

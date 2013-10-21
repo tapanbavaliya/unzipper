@@ -15,9 +15,13 @@ header#header
               a(href='#about') About
             li
               a(href='#contact') Contact
+            li
+              a(href='/account') Account
           ul.nav.navbar-nav.navbar-right
+            li
+              a(href='#') Hi, #{session.name}
             li.active
-              if (session) 
+              if (session)
                 a(href='/logout') Logout
               else
                 a(href='/login') Login

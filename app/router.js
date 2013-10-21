@@ -96,6 +96,16 @@ module.exports = function(app) {
     });
   });
 
+  app.get('/account', function(req, res){
+    DB.accountInfo(req.session.email, function(err, item){
+      if(err)
+      {
+        console.log("Error : "+err);
+      }
+      res.render('user',{item : item});
+    });
+  });
+
   app.post('/upload', function (request, response){
     console.log('Path: '+request.files.fileName.path);
     var path = request.files.fileName.path;

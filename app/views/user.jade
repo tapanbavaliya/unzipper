@@ -1,0 +1,73 @@
+extends layouts/default
+
+block main
+  h1= Temp
+
+  script.
+    function changePass()
+    {
+      var btn = document.getElementById("pwd");
+      var editPwd = document.getElementById("changePwd");
+      btn.style.display = 'none';
+      editPwd.style.display = 'block';
+      document.getElementById('cancel').style.display = 'block';
+    }
+    function cancelPwd()
+    {
+      var cancel = document.getElementById('cancel');
+      var btn = document.getElementById("pwd");
+      var editPwd = document.getElementById("changePwd");
+      btn.style.display = 'block';
+      editPwd.style.display = 'none';
+      cancel.style.display = 'none';
+    }
+
+block content
+  div.signBody
+    .container
+    .row
+      h2 Account Info
+    br
+  form(role='form', method='post')
+  .row
+   .col-lg-6
+    .row
+      .col-lg-2.pagination-right
+        label(for='name') Name:
+      .col-lg-4
+        input(id='name', type='text', value='#{item.name}', class='form-control', readonly)
+    br
+    .row
+      .col-lg-2
+        label(for='email') Email:
+      .col-lg-4
+        input(id='email', type='text', value='#{item.email}', class='form-control', readonly)
+    br
+    .row
+      .col-lg-2
+        label(for='plan') Plan:
+      .col-lg-4
+        input(id='plan', type='text', value='#{item.plan}', class='form-control', readonly)
+    br
+    .row
+      .col-lg-2
+        label(for='date') Created at:
+      .col-lg-4
+        p #{item.date}
+    br
+   .col-lg-6
+    .row
+      | Change Your Password.
+    br
+    .row
+      input(type='button', id='pwd',value='Edit Password', class='btn btn-primary', onclick='changePass()')
+    .row#changePwd(style='display:none')
+      .col-lg-4
+        input(type='password', placeholder='Change Password', class='form-control')
+      .col-lg-4
+        input(type='password', placeholder='Confirm Password', class='form-control')
+      .col-lg-4
+        input(type='submit', class='btn btn-success', value='Change')
+    br
+    .row
+      button.btn.btn-default#cancel(style='display:none', onclick='cancelPwd()') Cancel
