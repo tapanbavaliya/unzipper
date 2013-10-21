@@ -58,6 +58,12 @@ module.exports = function(app) {
     res.render('login', { title: 'Login' });
   });
 
+  app.get('/logout', function (req, res) {
+    req.session.destroy(function () {
+        res.redirect('/');
+    });
+  });
+
   app.get('/register', function(req, res){
     res.render('register');
   });
