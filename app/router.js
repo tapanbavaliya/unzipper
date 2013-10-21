@@ -38,6 +38,7 @@ module.exports = function(app) {
       } else{
         console.log(data);
           req.session.email = data.email;
+          req.session.name = data.name;
           console.log(req.param('remember-me'));
         if (req.param('remember-me') == 'true'){
           res.cookie('email', data.email, { maxAge: 900000 });
@@ -108,8 +109,8 @@ module.exports = function(app) {
     }
     else{
       console.log('Its a ZIP');
-
-      fs.createReadStream(request.files.fileName.path).pipe(unzip.Extract({ path: 'output/' }));
+      var dirName = request.session.name;
+      fs.createReadStream(request.files.fileName.path).pipe(unzip.Extract({ path: 'output/'+dirName }));
 
       var file = getDirectoryName(request.files.fileName.name);
       console.log('File:'+file);
