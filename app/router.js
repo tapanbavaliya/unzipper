@@ -7,6 +7,10 @@ module.exports = function(app) {
 
 // main login page //
 
+  app.get('/index', function(req,res){
+    res.render('index');
+  });
+
   app.get('/', function(req, res){
 
     console.log("Session:"+req.cookies.user);
@@ -50,12 +54,6 @@ module.exports = function(app) {
 
   app.get('/', function(req,res){
     res.render('login', { title: 'Login' });
-  });
-
-  app.get('/logout', function (req, res) {
-    req.session.destroy(function () {
-        res.redirect('/');
-    });
   });
 
   app.get('/register', function(req, res){
