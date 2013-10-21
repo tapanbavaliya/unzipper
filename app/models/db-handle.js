@@ -3,7 +3,7 @@ var Connection = require('mongodb').Connection;
 var Server = require('mongodb').Server;
 var BSON = require('mongodb').BSON;
 var ObjectID = require('mongodb').ObjectID;
-
+var fs = require('fs');
 var crypto = require('crypto');
 
 var moment 		= require('moment');
@@ -67,6 +67,9 @@ exports.addNewAccount = function(data, callback)
           saltAndHash(data.pass, function(hash){
             data.pass = hash;
             data.date = moment().format('MMMM Do YYYY, h:mm:ss a');
+            fs.mkdir('output/'+data.name, function (err) {
+              if (err) console.error(err)
+            });
             accounts.insert(data, {safe: true}, callback);
           });
         }
