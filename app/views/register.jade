@@ -11,6 +11,9 @@ html
     .container
       form.form-signup(role='form',method='post')
         h2.form-signup-heading Create an Account
+        p #{session}
+        if (session != null)
+          p #{session.email}
         br
         input.form-control(type='text', id='name',placeholder='User name', autofocus='', name='name', required='required')
         br

@@ -26,6 +26,10 @@ module.exports = function(app){
     app.use(express.methodOverride());
     app.use(require('stylus').middleware(__dirname + '/public'));
     app.use(express.static(__dirname, '/public'));
+    app.use(function(req,res,next){
+        res.locals.session = req.session;
+        next();
+    });
     app.use(app.router);
   });
 };
