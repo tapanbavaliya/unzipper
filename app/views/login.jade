@@ -6,7 +6,7 @@ html
   body.signBody
     .container
       form.form-signin(role='form', method='POST', action='/')
-        h2.form-signin-heading Please sign in
+        h2.form-signin-heading Sign in
         br
         input.form-control(type='text', placeholder='Email address', autofocus='', name='email',required='required')
         input.form-control(type='password', placeholder='Password', name='pass',required='required')
@@ -19,4 +19,4 @@ html
         .pagination
           a.pull-right(href='/register') Create an Account
         br
-        a(href="/index").btn.btn-default Go to Home
+        a(href="/").btn.btn-default Go to Home
