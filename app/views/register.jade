@@ -3,6 +3,10 @@ html
     link(href='//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css', rel='stylesheet')
     link(href='../public/css/site.css', rel='stylesheet')
     title Register
+    script
+      $('.nav-tabs').button()
+      $().button('toggle')
+      $('.btn').button('complete')
   body.signBody
     .container
       form.form-signup(role='form',method='post')
@@ -13,6 +17,11 @@ html
         input.form-control(type='email', placeholder='Email address', name='email',required='required', onblur='validate(this.id)')
         br
         input.form-control(type='password', placeholder='Password', name='pass',required='required')
+        br
+        label Select Your Plan:
+        select(name='plan')#plan.form-control
+          option(value='free') Free
+          option(value='paid') Paid
         br
         button.btn.btn-lg.btn-primary.btn-block(type='submit') Create Account
         .bottomline

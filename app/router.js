@@ -10,18 +10,12 @@ module.exports = function(app) {
   app.get('/', function(req, res){
 
     console.log("Session:"+req.cookies.user);
-    if (req.cookies.email == undefined || req.cookies.pass == undefined ){
+    if (req.session.email == undefined){
       res.render('login', { title: 'Login' });
     }
     else{
       DB.autoLogin(req.cookies.email, req.cookies.pass, function(data){
-        if (data != null){
-          req.session.email = data;
-          res.redirect('/upload');
-        }
-        else{
-          res.render('login', { title: 'Login' });
-        }
+        res.redirect('/upload');   
       });
     }
   });
@@ -67,7 +61,8 @@ module.exports = function(app) {
     DB.addNewAccount({
       name  : req.param('name'),
       email : req.param('email'),
-      pass  : req.param('pass')
+      pass  : req.param('pass'),
+      plan : req.param('plan')
     }, function(err){
       if (err){
         res.send(err, 400);
