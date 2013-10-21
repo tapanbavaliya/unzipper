@@ -62,3 +62,44 @@
   margin-top: 10px;
   margin-bottom: 5px;
 }
+
+.background_image
+{
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+font-family: Helvetica,serif;
+}
+
+.rowcustom{
+  margin-left: auto;
+  margin-right:auto;
+}
+
+.head{
+  font-family: Helvetica,serif;
+  font-size:10em;
+  margin-top:50px;
+  color: white;
+}
+
+.head1{
+  font-family: Helvetica,serif;
+  font-size:5em;
+  margin-top:50px;
+  color: white;
+}
+
+.feature{
+display:inline;
+font-size: 1.5em;
+margin-left: 5px;
+color:white;
+letter-spacing: 2px;
+}
+
+.error
+{
+  color:red;
+}

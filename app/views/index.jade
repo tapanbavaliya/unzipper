@@ -1,0 +1,52 @@
+html
+  head
+    link(href='//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css', rel='stylesheet')
+    link(href='../public/css/site.css', rel='stylesheet')
+    title Hosting
+  body.background_image(style='background: url(../public/img/background.jpg)')
+    .row
+      .col-lg-9
+      .col-lg-3
+        a(href="/").btn.btn-info Login
+        | &nbsp;/&nbsp;
+        a(href="/register").btn.btn-info Register
+    .row.rowcustom
+      .col-lg-2.col-md-2.col-sm-2.col-xs-2
+      .col-lg-10.col-md-10.col-sm-10.visible-lg.visible-md.visible-sm.head
+        | Easy Hosting
+      .col-xs-10.visible-xs
+        h1.head1 Easy Hosting
+    br
+    br
+    .row.rowcustom
+      .col-lg-2.col-md-2.col-sm-1.col-xs-1
+      .col-lg-4.col-md-4.col-sm-11.col-xs-10
+        img.img-responsive(src='../public/img/laptop.png', alt='laptop')
+      .col-xs-1.visible-xs
+      .col-lg-5.col-md-5.col-sm-12.col-xs-10(style='margin-left: 20px;')
+        br
+        .col-lg-12.col-md-12.col-sm-12
+          img(src='../public/img/arrow.png', alt='arrow')
+          p.feature Fast
+        br
+        .col-lg-12.col-md-12.col-sm-12
+          img(src='../public/img/arrow.png', alt='arrow')
+          p.feature On Cloud
+        br
+        .col-lg-12.col-md-12.col-sm-12
+          img(src='../public/img/arrow.png', alt='arrow')
+          p.feature Easy To Use
+        br
+        .col-lg-12.col-md-12.col-sm-12
+          img(src='../public/img/arrow.png', alt='arrow')
+          p.feature History Managment
+        br
+        .col-lg-12.col-md-12.col-sm-12
+          img(src='../public/img/arrow.png', alt='arrow')
+          p.feature Guaranteed 99.99% Up-Time
+        br
+        .col-lg-6.col-md-6.col-sm-6
+          .form-group
+            input#exampleInputEmail1.form-control(type='email', placeholder='Enter email')
+        a.btn.btn-primary.btn-lg(href='#', type='button', style='margin-top: -6px;')
+          | Subscribe
