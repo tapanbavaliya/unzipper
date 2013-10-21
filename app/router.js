@@ -7,11 +7,11 @@ module.exports = function(app) {
 
 // main login page //
 
-  app.get('/index', function(req,res){
+  app.get('/', function(req,res){
     res.render('index');
   });
 
-  app.get('/', function(req, res){
+  app.get('/login', function(req, res){
 
     console.log("Session:"+req.cookies.user);
     if (req.session.email == undefined){
@@ -45,20 +45,20 @@ module.exports = function(app) {
 
   app.get('/upload', function(req,res){
     if (req.session.email == null){
-      res.redirect('/');
+      res.redirect('/login');
     }
     else{
       res.render('upload');
     }
   });
 
-  app.get('/', function(req,res){
+  app.get('/login', function(req,res){
     res.render('login', { title: 'Login' });
   });
 
   app.get('/logout', function(req,res){
     req.session.destroy();
-    res.redirect('/');
+    res.redirect('/login');
     res.end();
   });
 
