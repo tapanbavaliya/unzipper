@@ -4,12 +4,12 @@ block main
   h1= Temp
 
 block content
-  div.signBody
+  div
     h2 File Upload
     p #{session.name}
     form(action='upload', name='Form', method='post', enctype='multipart/form-data', onsubmit='return validateForm()')
       label(for='file') Filename:
-      input#file(type='file', name='fileName', onchange='validateZip()')
+      input#file(type='file', name='fileName', onchange='validateZip()',required)
       br
       input#submit(type='submit', name='submit', value='Submit',class='btn btn-primary')
       br
