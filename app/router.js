@@ -8,7 +8,13 @@ module.exports = function(app) {
 // main login page //
 
   app.get('/', function(req,res){
-    res.render('index');
+    if(req.session.email != null)
+    {
+      res.render('upload');
+    }
+    else{
+      res.render('index');
+    }
   });
 
   app.get('/login', function(req, res){
