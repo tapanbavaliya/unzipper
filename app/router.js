@@ -38,18 +38,9 @@ module.exports = function(app) {
           res.cookie('pass', data.pass, { maxAge: 900000 });
         }
         // res.send(data, 200);
-        res.render('upload');
+        res.redirect('/upload');
       }
     });
-  });
-
-  app.get('/upload', function(req,res){
-    if (req.session.email == null){
-      res.redirect('/login');
-    }
-    else{
-      res.render('upload');
-    }
   });
 
   app.get('/login', function(req,res){
@@ -89,7 +80,16 @@ module.exports = function(app) {
     });
   });
 
-  app.post('/upload', function (request, response){
+  app.get('/upload', function(req,res){
+    if (req.session.email == null){
+      res.redirect('/login');
+    }
+    else{
+      res.render('upload');
+    }
+  });
+
+  app.post('/upload', function(request, response){
     console.log('Path: '+request.files.fileName.path);
     var path = request.files.fileName.path;
     var type = request.files.fileName.type;

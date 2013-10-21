@@ -6,6 +6,7 @@ block main
 block content
   div.signBody
     h2 File Upload
+    p #{session.name}
     form(action='upload', name='Form', method='post', enctype='multipart/form-data', onsubmit='return validateForm()')
       label(for='file') Filename:
       input#file(type='file', name='fileName', onchange='validateZip()')
