@@ -3,17 +3,13 @@ html
     link(href='//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css', rel='stylesheet')
     link(href='../public/css/site.css', rel='stylesheet')
     title Register
-    script
-      $('.nav-tabs').button()
-      $().button('toggle')
-      $('.btn').button('complete')
   body.signBody
     .container
       form.form-signup(role='form',method='post')
         h2.form-signup-heading Create an Account
-        p #{session}
-        if (session != null)
-          p #{session.email}
+        //- p #{session}
+        //- if (session != null)
+        //-   p #{session.email}
         br
         input.form-control(type='text', id='name',placeholder='User name', autofocus='', name='name', required='required')
         br

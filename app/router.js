@@ -56,8 +56,21 @@ module.exports = function(app) {
     res.render('login', { title: 'Login' });
   });
 
+  app.get('/logout', function(req,res){
+    req.session.destroy();
+    res.redirect('/');
+    res.end();
+  });
+
   app.get('/register', function(req, res){
-    res.render('register');
+    if(req.session.email != null)
+    {
+      res.render('upload');
+    }
+    else
+    {
+      res.render('register');
+    }
   });
 
   app.post('/register', function(req, res){
