@@ -38,20 +38,17 @@ module.exports = function(app) {
       } else{
         console.log(data);
           req.session.email = data.email;
-          req.session.name = data.name;
+          req.session.name = data.username;
+          req.session.userId = data._id;
+          // req.session.userId = data._id;
           console.log(req.param('remember-me'));
         if (req.param('remember-me') == 'true'){
           res.cookie('email', data.email, { maxAge: 900000 });
           res.cookie('pass', data.pass, { maxAge: 900000 });
         }
-        // res.send(data, 200);
         res.redirect('/upload');
       }
     });
-  });
-
-  app.get('/login', function(req,res){
-    res.render('login', { title: 'Login' });
   });
 
   app.get('/logout', function(req,res){
@@ -74,7 +71,9 @@ module.exports = function(app) {
   app.post('/register', function(req, res){
     console.log("Password:"+req.param('pass'));
     DB.addNewAccount({
-      name  : req.param('name'),
+      uname  : req.param('uname'),
+      fname  : req.param('fname'),
+      lname  : req.param('lname'),
       email : req.param('email'),
       pass  : req.param('pass'),
       plan : req.param('plan')
@@ -85,6 +84,14 @@ module.exports = function(app) {
         res.send('A/c created', 200);
       }
     });
+
+    // DB.addAccountDetails({
+
+    // });
+  });
+
+  app.get('/dashboard', function(req,res){
+    res.render('dashboard');
   });
 
   app.get('/upload', function(req,res){
@@ -113,17 +120,14 @@ module.exports = function(app) {
       fs.createReadStream(request.files.fileName.path).pipe(unzip.Extract({ path: 'output/'+dirName }));
 
       var file = getDirectoryName(request.files.fileName.name);
-      console.log('File:'+file);
-
-      //Create a user's directory : If present , will remain as it is.
-      // fs.mkdirsSync('output/userName');
-      var main = __dirname+'/output';
-      console.log(main);
-
-      var dir = __dirname+'/output/'+file;
+      var dir = __dirname+'/output/'+dirName+'/'+file;
       // fs.copySync(dir+'/', __dirname+'/test');
       // fs.removeSync(dir+'/*');
       // fs.removeSync(dir);
+
+      // var userId = request.session.userId;
+
+      // DB.addAccountDetails();
       response.end();
     }
   });
