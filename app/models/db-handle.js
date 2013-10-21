@@ -75,6 +75,12 @@ exports.addNewAccount = function(data, callback)
   });
 }
 
+exports.getAccountByEmail = function(email, callback)
+{
+  accounts.findOne({email:email}, function(e, o){ callback(o); });
+}
+
+
 /*Supporting Methods*/
 
 var generateSalt = function()
