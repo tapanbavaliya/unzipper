@@ -19,11 +19,12 @@ var db = new Db(dbName, new Server(dbHost, dbPort, {auto_reconnect: true}), {w: 
     console.log('connected to database :: ' + dbName);
   }
 });
-var accounts = db.collection('accounts');
+var users = db.collection('users');
+var account = db.collection('account');
 
 exports.autoLogin = function(email, pass, callback)
 {
-  accounts.findOne({email:email}, function(err, data) {
+  users.findOne({email:email}, function(err, data) {
     if (data){
       data.pass == pass ? callback(data) : callback(null);
     } else{
@@ -34,7 +35,7 @@ exports.autoLogin = function(email, pass, callback)
 
 exports.manualLogin = function(email, pass, callback)
 {
-  accounts.findOne({email:email}, function(err, data) {
+  users.findOne({email:email}, function(err, data) {
     if (data == null){
       callback('user-not-found');
     } 
@@ -52,13 +53,13 @@ exports.manualLogin = function(email, pass, callback)
 
 exports.addNewAccount = function(data, callback)
 {
-  accounts.findOne({name:data.name}, function(e, o) {
+  var userId = '';
+  users.findOne({username:data.uname}, function(e, o) {
     if (o){
       callback('username-taken');
     } 
     else{
-      accounts.findOne({email:data.email}, function(err,item){
-        console.log("Email:"+data.email);
+      users.findOne({email:data.email}, function(err,item){
         if(item){
           callback('Error: not unique email');
         }
@@ -67,10 +68,20 @@ exports.addNewAccount = function(data, callback)
           saltAndHash(data.pass, function(hash){
             data.pass = hash;
             data.date = moment().format('MMMM Do YYYY, h:mm:ss a');
-            fs.mkdir('output/'+data.name, function (err) {
-              if (err) console.error(err)
+            fs.mkdir('output/'+data.uname, function (err) {
+              if (err) console.error(err);
             });
-            accounts.insert(data, {safe: true}, callback);
+            users.insert({ 
+              'username':data.uname ,
+              'name' : {'first':data.fname, 'last':data.lname},
+              'email': data.email,
+              'pass' : data.pass,
+            }, {safe: true}, function(error,records){
+              console.log("Record :"+records[0]._id);
+              userId = records[0]._id;
+                account.insert({'userId' : userId,
+                'plan': data.plan}, {safe: true}, callback);
+              });
           });
         }
       });
@@ -91,7 +102,17 @@ exports.accountInfo = function(email, callback)
 
 exports.getAccountByEmail = function(email, callback)
 {
-  accounts.findOne({email:email}, function(e, o){ callback(o); });
+  users.findOne({email:email}, function(e, o){ callback(o); });
+}
+
+exports.addAccountDetails = function(data, callback)
+{
+  users.findOne({name:data._id}, function(e, err) {
+    if(!err){
+      console.log(data);
+      account.insert(data, {safe: true}, callback);
+    }
+  });
 }
 
 
