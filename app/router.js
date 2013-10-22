@@ -146,10 +146,10 @@ module.exports = function(app) {
   });
 
   app.post('/upload', function(request, response){
-    console.log('Path: '+request.files.fileName.path);
-    var path = request.files.fileName.path;
-    var type = request.files.fileName.type;
-    console.log('Name:'+request.files.fileName.name);
+    console.log('Path: '+request.files.file.path);
+    var path = request.files.file.path;
+    var type = request.files.file.type;
+    console.log('Name:'+request.files.file.name);
     console.log('Type: '+type);
     if(type != 'application/zip'){
       response.render('upload');
@@ -166,9 +166,9 @@ module.exports = function(app) {
           console.log("Didn't exist, but now created");
         }
       });
-      fs.createReadStream(request.files.fileName.path).pipe(unzip.Extract({ path: 'output/'+dirName }));
+      fs.createReadStream(request.files.file.path).pipe(unzip.Extract({ path: 'output/'+dirName }));
 
-      var file = getDirectoryName(request.files.fileName.name);
+      var file = getDirectoryName(request.files.file.name);
       var dir = __dirname+'/output/'+dirName+'/'+file;
 
       var userId = request.session.userId;
@@ -197,8 +197,8 @@ module.exports = function(app) {
     }
   });
 
-  function getDirectoryName(filename) {
-      var i = filename.lastIndexOf('.');
-      return (i < 0) ? '' : filename.substr(0,i);
+  function getDirectoryName(file) {
+      var i = file.lastIndexOf('.');
+      return (i < 0) ? '' : file.substr(0,i);
   }
 }

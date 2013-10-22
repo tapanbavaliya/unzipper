@@ -4,15 +4,10 @@ block main
   h1= Temp
 
 block content
-  div
-    h2 File Upload
+  div.container
+    .row
+      h2 File Upload
     p Hi,
       strong #{session.name}.
     p Now hosting your website is much simpler then you  thought. You just need to upload your website's zipped file and we'll manage everything for you.
-    form(action='upload', name='Form', method='post', enctype='multipart/form-data', onsubmit='return validateForm()')
-      label(for='file') Filename:
-      input#file(type='file', name='fileName', onchange='validateZip()',required)
-      br
-      input#submit(type='submit', name='submit', value='Submit',class='btn btn-primary')
-      br
-      label#error(style='color: red;')
+    form(action='upload', name='Form', method='post', enctype='multipart/form-data', onsubmit='return validateForm()', class='dropzone')

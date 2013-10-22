@@ -97,6 +97,11 @@ exports.userInfoByEmail = function(email, callback)
     {
       console.log('Error : '+err);
     }
+    account.findOne({userId: item._id},function(error, data){
+      item = item+data.plan;
+      console.log('Item Data:'+data.plan);
+    });
+    console.log(item);
     callback(null, item);
   });
 }
