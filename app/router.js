@@ -40,7 +40,7 @@ module.exports = function(app) {
           req.session.email = data.email;
           req.session.name = data.username;
           req.session.userId = data._id;
-          // req.session.userId = data._id;
+
           console.log(req.param('remember-me'));
         if (req.param('remember-me') == 'true'){
           res.cookie('email', data.email, { maxAge: 900000 });
@@ -84,10 +84,6 @@ module.exports = function(app) {
         res.send('A/c created', 200);
       }
     });
-
-    // DB.addAccountDetails({
-
-    // });
   });
 
   app.get('/dashboard', function(req,res){
@@ -163,17 +159,40 @@ module.exports = function(app) {
     else{
       console.log('Its a ZIP');
       var dirName = request.session.name;
+
+      fs.exists('output/'+dirName, function (exists) {
+        if(!exists){
+          fs.mkdirSync('output/'+dirName);
+          console.log("Didn't exist, but now created");
+        }
+      });
       fs.createReadStream(request.files.fileName.path).pipe(unzip.Extract({ path: 'output/'+dirName }));
 
       var file = getDirectoryName(request.files.fileName.name);
       var dir = __dirname+'/output/'+dirName+'/'+file;
-      // fs.copySync(dir+'/', __dirname+'/test');
-      // fs.removeSync(dir+'/*');
-      // fs.removeSync(dir);
 
-      // var userId = request.session.userId;
-
-      // DB.addAccountDetails();
+      var userId = request.session.userId;
+      var i = 0;
+      fs.readdir('output/'+dirName, function(err,list){
+        if (err){
+          console.log('Err :'+err);
+        }
+        else{
+          list.forEach(function(item){
+            i++;
+            console.log((i)+')'+item);
+          });
+          console.log("Total Dirs: "+ (i+1));
+          var count = i+1;
+          DB.addAccountDetails({
+            count  : count,
+            userId : userId 
+          },
+            function(err){
+              console.log('Error in adding number '+err);
+          });
+        }
+      });
       response.end();
     }
   });
