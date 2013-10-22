@@ -115,6 +115,22 @@ exports.editAccountNames = function(email, data, callback)
   });
 }
 
+exports.editAccountPass = function(email, data, callback)
+{
+  saltAndHash(data.pwd, function(hash){
+    data.pwd = hash;
+    users.update({email : email},
+    {
+      $set : { pass: data.pwd }
+    },
+    function(err){
+      if(err)
+        console.log(err);
+      }
+    )
+  });
+}
+
 exports.getAccountByEmail = function(email, callback)
 {
   users.findOne({email:email}, function(e, o){ callback(o); });

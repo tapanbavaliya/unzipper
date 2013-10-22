@@ -129,6 +129,26 @@ module.exports = function(app) {
     res.redirect('/account');
   });
 
+  app.post('/editPass', function(req, res){
+    if(req.param('pwd') != req.param('c_pwd'))
+    {
+      res.send("Password Does not match.");
+    }
+    else
+    {
+      DB.editAccountPass(req.session.email,
+        {pwd : req.param('pwd'),
+         c_pwd : req.param('c_pwd') },
+         function(err)
+         {
+          if(err)
+            console.log(err);
+         }
+        )
+      res.redirect('/account');
+    }
+  });
+
   app.post('/upload', function(request, response){
     console.log('Path: '+request.files.fileName.path);
     var path = request.files.fileName.path;

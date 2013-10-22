@@ -6,7 +6,7 @@ block main
   script.
     function changePass()
     {
-      var btn = document.getElementById("pwd");
+      var btn = document.getElementById("btn_pwd");
       var editPwd = document.getElementById("changePwd");
       btn.style.display = 'none';
       editPwd.style.display = 'block';
@@ -15,7 +15,7 @@ block main
     function cancelPwd()
     {
       var cancel = document.getElementById('cancel');
-      var btn = document.getElementById("pwd");
+      var btn = document.getElementById("btn_pwd");
       var editPwd = document.getElementById("changePwd");
       btn.style.display = 'block';
       editPwd.style.display = 'none';
@@ -47,6 +47,30 @@ block main
       edit.style.display = 'none';
       fname.readOnly = true;
       lname.readOnly = true;
+    }
+
+    function validatePass()
+    {
+      var pwd = document.getElementById('pwd');
+      var c_pwd = document.getElementById('c_pwd');
+      var err_lbl = document.getElementById('err_lbl');
+      var btn_pass = document.getElementById('btn_pass');
+      if(c_pwd.value.length >= 1)
+      {
+        if(pwd.value != c_pwd.value)
+        {
+          err_lbl.innerHTML = "Password Does not Match";
+          btn_pass.disabled = true;
+        }
+        else
+        {
+          err_lbl.innerHTML = "";
+          btn_pass.disabled = false;
+        }
+      }
+      else{
+        err_lbl.innerHTML = "";
+      }
     }
 
 block content
@@ -102,16 +126,18 @@ block content
    .col-lg-6
     .row
       | Change Your Password.
+      p#err_lbl(style='color:red')
     br
-    .row
-      input(type='button', id='pwd',value='Edit Password', class='btn btn-primary', onclick='changePass()')
-    .row#changePwd(style='display:none')
-      .col-lg-4
-        input(type='password', placeholder='Change Password', class='form-control')
-      .col-lg-4
-        input(type='password', placeholder='Confirm Password', class='form-control')
-      .col-lg-4
-        input(type='submit', class='btn btn-success', value='Change')
+    form(role='form', method='post', action='editPass')
+      .row
+        input(type='button', id='btn_pwd',value='Edit Password', class='btn btn-primary', onclick='changePass()')
+      .row#changePwd(style='display:none')
+        .col-lg-4
+          input(type='password', placeholder='Change Password', class='form-control', name='pwd', id='pwd')
+        .col-lg-4
+          input(type='password', placeholder='Confirm Password', class='form-control', name='c_pwd', id='c_pwd', onkeyup='validatePass()')
+        .col-lg-4
+          input(type='submit', class='btn btn-success', value='Change', disabled, id='btn_pass')
     br
     .row
       button.btn.btn-default#cancel(style='display:none', onclick='cancelPwd()') Cancel
