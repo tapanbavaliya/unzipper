@@ -21,6 +21,33 @@ block main
       editPwd.style.display = 'none';
       cancel.style.display = 'none';
     }
+    function changeName()
+    {
+      var btnEdit = document.getElementById('btnEdit');
+      var edit = document.getElementById('edit');
+      var fname = document.getElementById('fname');
+      var lname = document.getElementById('lname');
+      var cancle = document.getElementById('cancle');
+      btnEdit.style.display = 'none';
+      edit.style.display = 'block';
+      cancle.style.display = 'block';
+      fname.readOnly = false;
+      lname.readOnly = false;
+      fname.focus();
+    }
+    function cancleName()
+    {
+      var btnEdit = document.getElementById('btnEdit');
+      var edit = document.getElementById('edit');
+      var fname = document.getElementById('fname');
+      var lname = document.getElementById('lname');
+      var cancle = document.getElementById('cancle');
+      cancle.style.display = 'none';
+      btnEdit.style.display = 'block';
+      edit.style.display = 'none';
+      fname.readOnly = true;
+      lname.readOnly = true;
+    }
 
 block content
   div.signBody
@@ -28,31 +55,48 @@ block content
     .row
       h2 Account Info
     br
-  form(role='form', method='post')
   .row
    .col-lg-6
     .row
+     form(role='form', method='post', action='editName')
       .col-lg-2.pagination-right
         label(for='name') Name:
-      .col-lg-4
-        input(id='name', type='text', value='#{item.name}', class='form-control', readonly)
+      .col-lg-3
+        input(id='fname', type='text', name='fname', value='#{item.name.first}', class='form-control', readonly)
+      .col-lg-3
+        input(id='lname', type='text', name='lname', value='#{item.name.last}', class='form-control', readonly)
+      .col-lg-2
+        .row
+          .col-lg-7
+            button#btnEdit(type='button', class='btn btn-primary btn-md', onclick='changeName()') Edit
+        .row
+          .col-lg-7
+            input#edit(type='submit', class='btn btn-primary', value='Go', style='display:none')
+          .col-lg-3
+            span#cancle(style='display:none;font-size:1.7em',onclick='cancleName()').glyphicon.glyphicon-lg.glyphicon-remove-circle
+    br
+    .row
+      .col-lg-2.pagination-right
+        label(for='name') Username:
+      .col-lg-6
+        input(id='name', type='text', value='#{item.username}', class='form-control', readonly)
     br
     .row
       .col-lg-2
         label(for='email') Email:
-      .col-lg-4
+      .col-lg-6
         input(id='email', type='text', value='#{item.email}', class='form-control', readonly)
     br
     .row
       .col-lg-2
         label(for='plan') Plan:
-      .col-lg-4
+      .col-lg-6
         input(id='plan', type='text', value='#{item.plan}', class='form-control', readonly)
     br
     .row
       .col-lg-2
         label(for='date') Created at:
-      .col-lg-4
+      .col-lg-6
         p #{item.date}
     br
    .col-lg-6
