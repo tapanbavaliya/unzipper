@@ -76,6 +76,7 @@ exports.addNewAccount = function(data, callback)
               'name' : {'first':data.fname, 'last':data.lname},
               'email': data.email,
               'pass' : data.pass,
+              'date' : data.date,
             }, {safe: true}, function(error,records){
               console.log("Record :"+records[0]._id);
               userId = records[0]._id;
@@ -89,14 +90,28 @@ exports.addNewAccount = function(data, callback)
   });
 }
 
-exports.accountInfo = function(email, callback)
+exports.userInfoByEmail = function(email, callback)
 {
-  accounts.findOne({email:email}, function(err, item){
+  users.findOne({email:email}, function(err, item){
     if(err)
     {
       console.log('Error : '+err);
     }
     callback(null, item);
+  });
+}
+
+exports.editAccountNames = function(email, data, callback)
+{
+  users.update({email:email}, 
+  {
+    $set : { name : { first:data.fname, last:data.lname } }
+  },
+  function(err){
+    if(err)
+    {
+      console.log(err);
+    }
   });
 }
 
