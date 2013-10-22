@@ -99,6 +99,28 @@ module.exports = function(app) {
     }
   });
 
+  app.get('/account', function(req, res){
+    DB.userInfoByEmail(req.session.email, function(err, item){
+      if(err)
+      {
+        console.log("Error : "+err);
+      }
+      res.render('user',{item : item});
+    });
+  });
+
+  app.post('/editName', function(req, res){
+    DB.editAccountNames(req.session.email, 
+      {fname  : req.param('fname'),
+      lname  : req.param('lname'),},
+      function(err){
+        if(err)
+          console.log("Error: "+err);
+      }
+    )
+    res.redirect('/account');
+  });
+
   app.post('/upload', function(request, response){
     console.log('Path: '+request.files.fileName.path);
     var path = request.files.fileName.path;
