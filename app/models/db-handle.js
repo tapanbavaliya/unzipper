@@ -78,9 +78,9 @@ exports.addNewAccount = function(data, callback)
               'pass' : data.pass,
               'date' : data.date,
             }, {safe: true}, function(error,records){
-              console.log("Record :"+records[0]._id);
+              //Insert Details also in account collection
               userId = records[0]._id;
-                account.insert({'userId' : userId,
+              account.insert({'userId' : userId,
                 'plan': data.plan}, {safe: true}, callback);
               });
           });
@@ -97,6 +97,11 @@ exports.userInfoByEmail = function(email, callback)
     {
       console.log('Error : '+err);
     }
+    account.findOne({userId: item._id},function(error, data){
+      item = item+data.plan;
+      console.log('Item Data:'+data.plan);
+    });
+    console.log(item);
     callback(null, item);
   });
 }
@@ -138,12 +143,14 @@ exports.getAccountByEmail = function(email, callback)
 
 exports.addAccountDetails = function(data, callback)
 {
-  account.findOne({userId:  ObjectId(data.userId)},
-                  { $set: { count: data.count } },
-    function(e, err) {
+  console.log('ObjectId :'+ObjectID(data.userId));
+  account.update({userId:  ObjectID(data.userId)},
+    {
+      $set: { count: data.count }
+    },
+    function(err) {
       if(!err){
         console.log(data);
-        account.insert(data, {safe: true}, callback);
       }
     }
   );
