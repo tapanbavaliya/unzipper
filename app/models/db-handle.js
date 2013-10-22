@@ -96,12 +96,15 @@ exports.getAccountByEmail = function(email, callback)
 
 exports.addAccountDetails = function(data, callback)
 {
-  users.findOne({name:data._id}, function(e, err) {
-    if(!err){
-      console.log(data);
-      account.insert(data, {safe: true}, callback);
+  account.findOne({userId:  ObjectId(data.userId)},
+                  { $set: { count: data.count } },
+    function(e, err) {
+      if(!err){
+        console.log(data);
+        account.insert(data, {safe: true}, callback);
+      }
     }
-  });
+  );
 }
 
 
