@@ -10,7 +10,7 @@ module.exports = function(app) {
   app.get('/', function(req,res){
     if(req.session.email != null)
     {
-      res.render('upload');
+      res.redirect('upload');
     }
     else{
       res.render('index');
@@ -96,7 +96,15 @@ module.exports = function(app) {
       res.redirect('/login');
     }
     else{
-      res.render('upload');
+      console.log('Before Renderinh home, User Id :'+req.session.userId);
+      DB.getAccountDetailsByUserId(req.session.userId, function(err,item){
+        if(err){
+          console.log('Err: '+err);
+        }
+        else{
+          res.render('upload',{item : item});
+        }
+      });
     }
   });
 

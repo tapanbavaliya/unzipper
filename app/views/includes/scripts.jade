@@ -14,11 +14,18 @@ head
     var myDropzone = $("#form");
     Dropzone.options.myDropzone = {
       maxFiles: 0,
+      uploadMultiple : false,
+      acceptedFiles: 'application/zip',
       init: function() {
+        var myDropzone = this;
+
         this.on("maxfilesexceeded", function(file) {
           this.removeFile(file);
           console.log("maxfilesexceeded");
         });
-        this.on("addedfile", function(file) { alert("Added file."); });
+
+        this.on("addedfile", function(file) { 
+          alert("Added file."); 
+        });
       }
-    };
+    }
