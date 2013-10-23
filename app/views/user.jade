@@ -136,15 +136,15 @@ block content
       p#err_lbl(style='color:red')
     br
     form(role='form', method='post', action='editPass')
-    .row
-      input(type='button', id='btn_pwd',value='Edit Password', class='btn btn-primary', onclick='changePass()')
-      .row#changePwd(style='display:none')
-        .col-lg-4
-          input(type='password', placeholder='Change Password', class='form-control', name='pwd', id='pwd')
-        .col-lg-4
-          input(type='password', placeholder='Confirm Password', class='form-control', name='c_pwd', id='c_pwd', onblur='validatePass()')
-        .col-lg-4
-          input(type='submit', class='btn btn-success', value='Change', disabled, id='btn_pass')
-    br
+      .row
+        input(type='button', id='btn_pwd',value='Edit Password', class='btn btn-primary', onclick='changePass()')
+        .row#changePwd(style='display:none')
+          .col-lg-4
+            input(type='password', placeholder='Change Password', class='form-control', name='pwd', id='pwd')
+          .col-lg-4
+            input(type='password', placeholder='Confirm Password', class='form-control', name='c_pwd', id='c_pwd', onblur='validatePass()')
+          .col-lg-4
+            input(type='submit', class='btn btn-success', value='Change', disabled, id='btn_pass')
+      br
     .row
       button.btn.btn-default#cancel(style='display:none', onclick='cancelPwd()') Cancel
