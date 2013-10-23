@@ -2,12 +2,16 @@
 html(lang='en')
   include ../includes/scripts
   body.signBody
-    .wrapper
-      include ../includes/header
-      .container
-        .main-content
-          .main-head
-            block main
-          block content
-      .push
+    .row.customRow
+      .col-sm-1
+        .leftPanel
+      .col-sm-11
+        .wrapper
+          include ../includes/header
+          .container
+            .main-content
+              .main-head
+                block main
+              block content
+          .push
 include ../includes/footer

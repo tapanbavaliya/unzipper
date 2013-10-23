@@ -105,3 +105,54 @@ letter-spacing: 2px;
 {
   color:red;
 }
+
+/* Dashboard */
+.widget
+{
+  height: 340px;
+  padding-left: 0px;
+  padding-right: 0px;
+  margin: auto;
+  background: #FFF;
+  border-radius: 4px;
+  box-shadow:0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
+}
+.widget25
+{
+  width: 24%;
+}
+.widget50{
+  width: 49%;
+}
+.widget75{
+  width: 74%;
+}
+.panel{
+  margin-bottom: 0px;
+  background: #4C4E51;
+  background: -moz-linear-gradient(top, #5A5E63, #3D3D3E);
+  background: -webkit-linear-gradient(top, #5A5E63, #3D3D3E);
+  color:white;
+  text-shadow: 0 1px 1px #000000;
+  font-size: 14px;
+  text-align: center;
+  text-transform: uppercase;
+  height: 40px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  padding: 5px;
+}
+
+.leftPanel
+{
+  background: -moz-linear-gradient(left, #222, #333);
+  background: -webkit-linear-gradient(top, #222, #333);
+  width:8.5%;
+  height : 100%;
+  position: fixed;
+  margin-left: -1%;
+}
+.customRow{
+  margin-left: 0px;
+  margin-right: 0px;
+}
