@@ -40,6 +40,7 @@ module.exports = function(app) {
           req.session.email = data.email;
           req.session.name = data.username;
           req.session.userId = data._id;
+          req.session.data = data;
 
           console.log(req.param('remember-me'));
         if (req.param('remember-me') == 'true'){

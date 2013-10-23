@@ -10,6 +10,7 @@ block main
       var editPwd = document.getElementById("changePwd");
       btn.style.display = 'none';
       editPwd.style.display = 'block';
+      document.getElementById('pwd').focus();
       document.getElementById('cancel').style.display = 'block';
     }
     function cancelPwd()
@@ -77,12 +78,18 @@ block content
   div.signBody
     .container
     .row
-      h2 Account Info
+      h2 Account Setting
     br
   .row
    .col-lg-6
     .row
      form(role='form', method='post', action='editName')
+      .row
+        .col-lg-2
+        .col-lg-3
+          p(style='margin-left:10px') ( First Name )
+        .col-lg-3
+          p ( Last Name )
       .col-lg-2.pagination-right
         label(for='name') Name:
       .col-lg-3
@@ -131,13 +138,13 @@ block content
     form(role='form', method='post', action='editPass')
       .row
         input(type='button', id='btn_pwd',value='Edit Password', class='btn btn-primary', onclick='changePass()')
-      .row#changePwd(style='display:none')
-        .col-lg-4
-          input(type='password', placeholder='Change Password', class='form-control', name='pwd', id='pwd')
-        .col-lg-4
-          input(type='password', placeholder='Confirm Password', class='form-control', name='c_pwd', id='c_pwd', onkeyup='validatePass()')
-        .col-lg-4
-          input(type='submit', class='btn btn-success', value='Change', disabled, id='btn_pass')
-    br
+        .row#changePwd(style='display:none')
+          .col-lg-4
+            input(type='password', placeholder='Change Password', class='form-control', name='pwd', id='pwd')
+          .col-lg-4
+            input(type='password', placeholder='Confirm Password', class='form-control', name='c_pwd', id='c_pwd', onblur='validatePass()')
+          .col-lg-4
+            input(type='submit', class='btn btn-success', value='Change', disabled, id='btn_pass')
+      br
     .row
       button.btn.btn-default#cancel(style='display:none', onclick='cancelPwd()') Cancel
