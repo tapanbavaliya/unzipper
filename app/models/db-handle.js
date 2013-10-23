@@ -163,7 +163,6 @@ exports.getAccountDetailsByUserId = function(userId, callback)
 {
   account.findOne({userId: ObjectID(userId)},
     function(err, data){
-      console.log("Data by user: "+data);
       callback(null, data);
     }
   );

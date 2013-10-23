@@ -15,7 +15,6 @@ head
     Dropzone.options.myDropzone = {
       maxFiles: 0,
       uploadMultiple : false,
-      acceptedFiles: 'application/zip',
       init: function() {
         var myDropzone = this;
 
@@ -24,8 +23,10 @@ head
           console.log("maxfilesexceeded");
         });
 
-        this.on("addedfile", function(file) { 
-          alert("Added file."); 
+        this.on("addedfile", function() {
+          if (this.files[1]!=null){
+            this.removeFile(this.files[0]);
+          }
         });
       }
     }

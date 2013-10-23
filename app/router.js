@@ -88,6 +88,7 @@ module.exports = function(app) {
   });
 
   app.get('/dashboard', function(req,res){
+    //Code to get all site details
     res.render('dashboard');
   });
 
@@ -96,7 +97,6 @@ module.exports = function(app) {
       res.redirect('/login');
     }
     else{
-      console.log('Before Renderinh home, User Id :'+req.session.userId);
       DB.getAccountDetailsByUserId(req.session.userId, function(err,item){
         if(err){
           console.log('Err: '+err);
@@ -160,50 +160,43 @@ module.exports = function(app) {
     var type = request.files.file.type;
     console.log('Name:'+request.files.file.name);
     console.log('Type: '+type);
-    if(type != 'application/zip'){
-      response.render('upload');
-      console.log('NOT ZIP');
-      response.end();
-    }
-    else{
-      console.log('Its a ZIP');
-      var dirName = request.session.name;
 
-      fs.exists('output/'+dirName, function (exists) {
-        if(!exists){
-          fs.mkdirSync('output/'+dirName);
-          console.log("Didn't exist, but now created");
-        }
-      });
-      fs.createReadStream(request.files.file.path).pipe(unzip.Extract({ path: 'output/'+dirName }));
+    var dirName = request.session.name;
 
-      var file = getDirectoryName(request.files.file.name);
-      var dir = __dirname+'/output/'+dirName+'/'+file;
+    fs.exists('output/'+dirName, function (exists) {
+      if(!exists){
+        fs.mkdirSync('output/'+dirName);
+        console.log("Didn't exist, but now created");
+      }
+    });
+    fs.createReadStream(request.files.file.path).pipe(unzip.Extract({ path: 'output/'+dirName }));
 
-      var userId = request.session.userId;
-      var i = 0;
-      fs.readdir('output/'+dirName, function(err,list){
-        if (err){
-          console.log('Err :'+err);
-        }
-        else{
-          list.forEach(function(item){
-            i++;
-            console.log((i)+')'+item);
-          });
-          console.log("Total Dirs: "+ (i+1));
-          var count = i+1;
-          DB.addAccountDetails({
-            count  : count,
-            userId : userId 
-          },
-            function(err){
-              console.log('Error in adding number '+err);
-          });
-        }
-      });
-      response.end();
-    }
+    var file = getDirectoryName(request.files.file.name);
+    var dir = __dirname+'/output/'+dirName+'/'+file;
+
+    var userId = request.session.userId;
+    var i = 0;
+    fs.readdir('output/'+dirName, function(err,list){
+      if (err){
+        console.log('Err :'+err);
+      }
+      else{
+        list.forEach(function(item){
+          i++;
+          console.log((i)+')'+item);
+        });
+        console.log("Total Dirs: "+ (i+1));
+        var count = i+1;
+        DB.addAccountDetails({
+          count  : count,
+          userId : userId 
+        },
+          function(err){
+            console.log('Error in adding number '+err);
+        });
+      }
+    });
+    response.end();
   });
 
   function getDirectoryName(file) {
