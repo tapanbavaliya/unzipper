@@ -22,6 +22,8 @@ var db = new Db(dbName, new Server(dbHost, dbPort, {auto_reconnect: true}), {w: 
 var users = db.collection('users');
 var account = db.collection('account');
 
+
+//Users collection's methods
 exports.autoLogin = function(email, pass, callback)
 {
   users.findOne({email:email}, function(err, data) {
@@ -136,11 +138,12 @@ exports.editAccountPass = function(email, data, callback)
   });
 }
 
-exports.getAccountByEmail = function(email, callback)
+exports.getUserByEmail = function(email, callback)
 {
   users.findOne({email:email}, function(e, o){ callback(o); });
 }
 
+//Account collection's methods
 exports.addAccountDetails = function(data, callback)
 {
   console.log('ObjectId :'+ObjectID(data.userId));
@@ -152,6 +155,16 @@ exports.addAccountDetails = function(data, callback)
       if(!err){
         console.log(data);
       }
+    }
+  );
+}
+
+exports.getAccountDetailsByUserId = function(userId, callback)
+{
+  account.findOne({userId: ObjectID(userId)},
+    function(err, data){
+      console.log("Data by user: "+data);
+      callback(null, data);
     }
   );
 }
