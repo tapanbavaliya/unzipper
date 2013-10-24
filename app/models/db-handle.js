@@ -57,37 +57,31 @@ exports.manualLogin = function(email, pass, callback)
 exports.addNewAccount = function(data, callback)
 {
   var userId = '';
-  users.findOne({username:data.uname}, function(e, o) {
-    if (o){
-      callback('username-taken');
-    } 
+  users.findOne({email:data.email}, function(err,item){
+    if(item){
+      callback('Error: not unique email');
+    }
     else{
-      users.findOne({email:data.email}, function(err,item){
-        if(item){
-          callback('Error: not unique email');
-        }
-        else{
-          console.log(data.pass);
-          saltAndHash(data.pass, function(hash){
-            data.pass = hash;
-            data.date = moment().format('MMMM Do YYYY, h:mm:ss a');
-            fs.mkdir('output/'+data.uname, function (err) {
-              if (err) console.error(err);
-            });
-            users.insert({ 
-              'username':data.uname ,
-              'name' : {'first':data.fname, 'last':data.lname},
-              'email': data.email,
-              'pass' : data.pass,
-              'date' : data.date,
-            }, {safe: true}, function(error,records){
-              //Insert Details also in account collection
-              userId = records[0]._id;
-              account.insert({'userId' : userId,
-                'plan': data.plan}, {safe: true}, callback);
-              });
+      console.log('Passqord B4 hashed : '+data.pass);
+      saltAndHash(data.pass, function(hash){
+        data.pass = hash;
+        data.date = moment().format('MMMM Do YYYY, h:mm:ss a');
+        var dirName = createDirectoryname(data.email);
+        fs.mkdir('output/'+dirName, function (err) {
+          if (err) console.error(err);
+        });
+        users.insert({ 
+          'name' : data.name,
+          'email': data.email,
+          'pass' : data.pass,
+          'date' : data.date,
+        }, {safe: true}, 
+          function(error,records){
+          //Insert Details also in account collection
+            userId = records[0]._id;
+            // account.insert({'userId' : userId,
+            //   'plan': data.plan}, {safe: true}, callback);
           });
-        }
       });
     }
   });
@@ -100,10 +94,10 @@ exports.userInfoByEmail = function(email, callback)
     {
       console.log('Error : '+err);
     }
-    account.findOne({userId: item._id},function(error, data){
-      item = item+data.plan;
-      console.log('Item Data:'+data.plan);
-    });
+    // account.findOne({userId: item._id},function(error, data){
+    //   item = item+data.plan;
+    //   console.log('Item Data:'+data.plan);
+    // });
     console.log(item);
     callback(null, item);
   });
@@ -113,7 +107,7 @@ exports.editAccountNames = function(email, data, callback)
 {
   users.update({email:email}, 
   {
-    $set : { name : { first:data.fname, last:data.lname } }
+    $set : { name : data.name }
   },
   function(err){
     if(err)
@@ -171,6 +165,11 @@ exports.getAccountDetailsByUserId = function(userId, callback)
 
 
 /*Supporting Methods*/
+
+var createDirectoryname = function(email){
+  var i = email.lastIndexOf('@');
+  return (i < 0) ? '' : email.substr(0,i);
+}
 
 var generateSalt = function()
 {

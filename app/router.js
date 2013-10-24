@@ -39,7 +39,7 @@ module.exports = function(app) {
       } else{
         console.log(data);
           req.session.email = data.email;
-          req.session.name = data.username;
+          req.session.name = data.name;
           req.session.userId = data._id;
           req.session.data = data;
 
@@ -73,12 +73,9 @@ module.exports = function(app) {
   app.post('/register', function(req, res){
     console.log("Password:"+req.param('pass'));
     DB.addNewAccount({
-      uname  : req.param('uname'),
-      fname  : req.param('fname'),
-      lname  : req.param('lname'),
+      name  : req.param('name'),
       email : req.param('email'),
-      pass  : req.param('pass'),
-      plan : req.param('plan')
+      pass  : req.param('pass')
     }, function(err){
       if (err){
         res.send(err, 400);
@@ -90,25 +87,31 @@ module.exports = function(app) {
 
   app.get('/dashboard', function(req,res){
     //Code to get all site details
-    var i,totalSizeBytes;
-    var dirName = req.session.name;
-    var sites = [];
-    fs.readdir('output/'+dirName, function(err,list){
-      if (!err){
-        list.forEach(function(item){
-          console.log(item);
-          sites.push(item);
+    if(req.session.email == null || req.session.email == undefined){
+      res.redirect('/login');
+    }
+    else
+    {
+      var i,totalSizeBytes;
+      var dirName = createDirectoryname(req.session.email);
+      var sites = [];
+      fs.readdir('output/'+dirName, function(err,list){
+        if (!err){
+          list.forEach(function(item){
+            console.log(item);
+            sites.push(item);
+          });
+        }
+
+        readSizeRecursive('output/'+dirName, function(err,item){
+          item = (item/(1024*1024));
+          console.log('Total Space:'+(item));
         });
-      }
 
-      readSizeRecursive('output/'+dirName, function(err,item){
-        item = (item/(1024*1024));
-        console.log('Total Space:'+Math.round(item)+'MB');
+        console.log('Sites: '+sites);
+        res.render('dashboard',{sites : sites});
       });
-
-      console.log('Sites: '+sites);
-      res.render('dashboard',{sites : sites});
-    });
+    }
   });
 
   function readSizeRecursive(item, cb) {
@@ -153,8 +156,7 @@ module.exports = function(app) {
 
   app.post('/editName', function(req, res){
     DB.editAccountNames(req.session.email, 
-      {fname  : req.param('fname'),
-      lname  : req.param('lname'),},
+      {name  : req.param('name')},
       function(err){
         if(err)
           console.log("Error: "+err);
@@ -206,7 +208,8 @@ module.exports = function(app) {
     console.log('Name:'+request.files.file.name);
     console.log('Type: '+type);
 
-    var dirName = request.session.name;
+    var dirName = createDirectoryname(request.session.email);
+    console.log('User dir name: '+dirName);
 
     fs.exists('output/'+dirName, function (exists) {
       if(!exists){
@@ -252,5 +255,10 @@ module.exports = function(app) {
   function getDirectoryName(file) {
       var i = file.lastIndexOf('.');
       return (i < 0) ? '' : file.substr(0,i);
+  }
+
+  function createDirectoryname(email){
+    var i = email.lastIndexOf('@');
+    return (i < 0) ? '' : email.substr(0,i);
   }
 }
