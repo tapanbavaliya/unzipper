@@ -8,7 +8,6 @@ block content
     .row
       h2 File Upload
     p Hi,&nbsp;
-      strong #{ session.data.name.first }.
-    li= item.plan
+      strong #{ session.data.name }.
     p Now hosting your website is much simpler then you  thought. You just need to upload your website's zipped file and we'll manage everything for you.
     form(action='upload', name='UploadForm', method='post', enctype='multipart/form-data', class='dropzone', id='form')

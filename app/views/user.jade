@@ -84,18 +84,12 @@ block content
    .col-lg-6
     .row
      form(role='form', method='post', action='editName')
-      .row
-        .col-lg-2
-        .col-lg-3
-          p(style='margin-left:10px') ( First Name )
-        .col-lg-3
-          p ( Last Name )
       .col-lg-2.pagination-right
         label(for='name') Name:
-      .col-lg-3
-        input(id='fname', type='text', name='fname', value='#{item.name.first}', class='form-control', readonly)
-      .col-lg-3
-        input(id='lname', type='text', name='lname', value='#{item.name.last}', class='form-control', readonly)
+      .col-lg-4
+        input(id='fname', type='text', name='name', value='#{item.name}', class='form-control', readonly)
+      //- .col-lg-3
+      //-   input(id='lname', type='text', name='lname', value='#{item.name.last}', class='form-control', readonly)
       .col-lg-2
         .row
           .col-lg-7
@@ -107,22 +101,10 @@ block content
             span#cancle(style='display:none;font-size:1.7em',onclick='cancleName()').glyphicon.glyphicon-lg.glyphicon-remove-circle
     br
     .row
-      .col-lg-2.pagination-right
-        label(for='name') Username:
-      .col-lg-6
-        input(id='name', type='text', value='#{item.username}', class='form-control', readonly)
-    br
-    .row
       .col-lg-2
         label(for='email') Email:
       .col-lg-6
         input(id='email', type='text', value='#{item.email}', class='form-control', readonly)
-    br
-    .row
-      .col-lg-2
-        label(for='plan') Plan:
-      .col-lg-6
-        input(id='plan', type='text', value='#{item.plan}', class='form-control', readonly)
     br
     .row
       .col-lg-2
