@@ -62,11 +62,10 @@ exports.addNewAccount = function(data, callback)
       callback('Error: not unique email');
     }
     else{
-      console.log('Passqord B4 hashed : '+data.pass);
+      var dirName = createDirectoryname(data.email);
       saltAndHash(data.pass, function(hash){
         data.pass = hash;
         data.date = moment().format('MMMM Do YYYY, h:mm:ss a');
-        var dirName = createDirectoryname(data.email);
         fs.mkdir('output/'+dirName, function (err) {
           if (err) console.error(err);
         });
@@ -78,7 +77,7 @@ exports.addNewAccount = function(data, callback)
         }, {safe: true}, 
           function(error,records){
           //Insert Details also in account collection
-            userId = records[0]._id;
+            // userId = records[0]._id;
             // account.insert({'userId' : userId,
             //   'plan': data.plan}, {safe: true}, callback);
           });

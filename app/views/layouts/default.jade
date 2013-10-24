@@ -1,5 +1,6 @@
 !!! 5
 html(lang='en')
+  block title
   include ../includes/scripts
   body.signBody
     .row.customRow
@@ -11,7 +12,6 @@ html(lang='en')
           .container
             .main-content
               .main-head
-                block main
               block content
           .push
 include ../includes/footer
