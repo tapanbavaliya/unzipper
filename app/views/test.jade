@@ -1,0 +1,30 @@
+!!! 5
+html
+  head
+    meta(charset='utf-8')
+    title File Upload!
+    script(src='../public/js/jquery.js')
+    script(src='../public/js/javascript.js')
+    link(rel='stylesheet', type='text/css', href='../public/css/style.css')
+  body
+    .content
+      #drop-files(ondragover='return false')
+        | Drop Images Here
+      #uploaded-holder
+        #dropped-files
+          #upload-button
+            a.upload(href='#') Upload!
+            a.delete(href='#') delete
+            span 0 Files
+        #extra-files
+          .number
+            | 0
+          #file-list
+            ul
+      #loading
+        #loading-bar
+          .loading-color  
+        #loading-content Uploading file.jpg
+      #file-name-holder
+        ul#uploaded-files
+          h1 Uploaded Files
