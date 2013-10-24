@@ -62,7 +62,7 @@ module.exports = function(app) {
   app.get('/register', function(req, res){
     if(req.session.email != null)
     {
-      res.render('upload');
+      res.redirect('upload');
     }
     else
     {
@@ -71,7 +71,6 @@ module.exports = function(app) {
   });
 
   app.post('/register', function(req, res){
-    console.log("Password:"+req.param('pass'));
     DB.addNewAccount({
       name  : req.param('name'),
       email : req.param('email'),
@@ -102,14 +101,15 @@ module.exports = function(app) {
             sites.push(item);
           });
         }
-
-        readSizeRecursive('output/'+dirName, function(err,item){
-          item = (item/(1024*1024));
-          console.log('Total Space:'+(item));
-        });
+        if(sites.length > 0){
+          readSizeRecursive('output/'+dirName, function(err,item){
+            item = (item/(1024*1024));
+            console.log('Total Space:'+(item));
+          });
+        }
 
         console.log('Sites: '+sites);
-        res.render('dashboard',{sites : sites});
+        res.render('dashboard',{sites : sites, url :'/dashboard'});
       });
     }
   });
@@ -150,7 +150,7 @@ module.exports = function(app) {
       {
         console.log("Error : "+err);
       }
-      res.render('user',{item : item});
+      res.render('user',{item : item, url : '/account'});
     });
   });
 
@@ -195,7 +195,7 @@ module.exports = function(app) {
           console.log('Err: '+err);
         }
         else{
-          res.render('upload',{item : item});
+          res.render('upload',{item : item, url :'/'});
         }
       });
     }
