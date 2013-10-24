@@ -9,18 +9,18 @@ header#header
           a.navbar-brand(href='#') Improwised
         .navbar-collapse.collapse
           ul.nav.navbar-nav
-            li.active
+            li(class=(url === '/' ? 'active' : ''))
               a(href='/') Home
-            li
-              a(href='#about') About
-            li
+            li(class=(url === '/#' ? 'active' : ''))
+              a(href='#') About
+            li(class=(url === '/dashboard' ? 'active' : ''))
               a(href='/dashboard') Dashboard
-            li
+            li(class=(url === '/account' ? 'active' : ''))
               a(href='/account') Account
           ul.nav.navbar-nav.navbar-right
             li
-              a(href='#') Hi, #{session.name}
-            li.active
+              a(href='/account') Hi, #{session.name}
+            li
               if (session)
                 a(href='/logout') Logout
               else

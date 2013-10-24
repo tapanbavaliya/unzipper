@@ -1,6 +1,7 @@
 var fs = require('fs-extra');
 var unzip = require('unzip');
-
+var async = require('async');
+var path = require('path');
 var DB = require('./models/db-handle');
 
 module.exports = function(app) {
@@ -38,7 +39,7 @@ module.exports = function(app) {
       } else{
         console.log(data);
           req.session.email = data.email;
-          req.session.name = data.username;
+          req.session.name = data.name;
           req.session.userId = data._id;
           req.session.data = data;
 
@@ -65,7 +66,7 @@ module.exports = function(app) {
   app.get('/register', function(req, res){
     if(req.session.email != null)
     {
-      res.render('upload');
+      res.redirect('upload');
     }
     else
     {
@@ -74,14 +75,10 @@ module.exports = function(app) {
   });
 
   app.post('/register', function(req, res){
-    console.log("Password:"+req.param('pass'));
     DB.addNewAccount({
-      uname  : req.param('uname'),
-      fname  : req.param('fname'),
-      lname  : req.param('lname'),
+      name  : req.param('name'),
       email : req.param('email'),
-      pass  : req.param('pass'),
-      plan : req.param('plan')
+      pass  : req.param('pass')
     }, function(err){
       if (err){
         res.send(err, 400);
@@ -92,25 +89,60 @@ module.exports = function(app) {
   });
 
   app.get('/dashboard', function(req,res){
-    res.render('dashboard');
-  });
-
-  app.get('/upload', function(req,res){
-    if (req.session.email == null){
+    //Code to get all site details
+    if(req.session.email == null || req.session.email == undefined){
       res.redirect('/login');
     }
-    else{
-      console.log('Before Renderinh home, User Id :'+req.session.userId);
-      DB.getAccountDetailsByUserId(req.session.userId, function(err,item){
-        if(err){
-          console.log('Err: '+err);
+    else
+    {
+      var i,totalSizeBytes;
+      var dirName = createDirectoryname(req.session.email);
+      var sites = [];
+      fs.readdir('output/'+dirName, function(err,list){
+        if (!err){
+          list.forEach(function(item){
+            console.log(item);
+            sites.push(item);
+          });
         }
-        else{
-          res.render('upload',{item : item});
+        if(sites.length > 0){
+          readSizeRecursive('output/'+dirName, function(err,item){
+            item = (item/(1024*1024));
+            console.log('Total Space:'+(item));
+          });
         }
+
+        console.log('Sites: '+sites);
+        res.render('dashboard',{sites : sites, url :'/dashboard'});
       });
     }
   });
+
+  function readSizeRecursive(item, cb) {
+    fs.lstat(item, function(err, stats) {
+      var total = stats.size;
+      if (!err && stats.isDirectory()) {
+        fs.readdir(item, function(err, list) {
+          console.log("readSizeRecursive :"+ item);
+          async.forEach(
+            list,
+            function(diritem, callback) {
+              readSizeRecursive(path.join(item, diritem), function(err, size) {
+                total += size;
+                callback(err);
+              });
+            },
+            function(err) {
+              cb(err, total);
+            }
+          );
+        });
+      }
+      else {
+        cb(err, total);
+      }
+    });
+  }
 
   app.get('/account', function(req, res){
     if( req.session.email == null )
@@ -122,14 +154,13 @@ module.exports = function(app) {
       {
         console.log("Error : "+err);
       }
-      res.render('user',{item : item});
+      res.render('user',{item : item, url : '/account'});
     });
   });
 
   app.post('/editName', function(req, res){
     DB.editAccountNames(req.session.email, 
-      {fname  : req.param('fname'),
-      lname  : req.param('lname'),},
+      {name  : req.param('name')},
       function(err){
         if(err)
           console.log("Error: "+err);
@@ -158,6 +189,22 @@ module.exports = function(app) {
     }
   });
 
+  app.get('/upload', function(req,res){
+    if (req.session.email == null){
+      res.redirect('/login');
+    }
+    else{
+      DB.getAccountDetailsByUserId(req.session.userId, function(err,item){
+        if(err){
+          console.log('Err: '+err);
+        }
+        else{
+          res.render('upload',{item : item, url :'/'});
+        }
+      });
+    }
+  });
+
   app.post('/upload', function(request, response){
     // console.log('Path: '+request.files.file.path);
     // console.log("Name : "+request.body.name);
@@ -167,59 +214,65 @@ module.exports = function(app) {
       if(err)
         console.log(err);
     });
+    
+    console.log('Path: '+request.files.file.path);
+    var path = request.files.file.path;
+    var type = request.files.file.type;
+    console.log('Name:'+request.files.file.name);
+    console.log('Type: '+type);
 
-    // var path = request.files.file.path;
-    // var type = request.files.file.type;
-    // console.log('Name:'+request.files.file.name);
-    // console.log('Type: '+type);
-    // if(type != 'application/zip'){
-    //   response.render('upload');
-    //   console.log('NOT ZIP');
-    //   response.end();
-    // }
-    // else{
-    //   console.log('Its a ZIP');
-    //   var dirName = request.session.name;
+    var dirName = createDirectoryname(request.session.email);
+    console.log('User dir name: '+dirName);
 
-    //   fs.exists('output/'+dirName, function (exists) {
-    //     if(!exists){
-    //       fs.mkdirSync('output/'+dirName);
-    //       console.log("Didn't exist, but now created");
-    //     }
-    //   });
-    //   fs.createReadStream(request.files.file.path).pipe(unzip.Extract({ path: 'output/'+dirName }));
+    fs.exists('output/'+dirName, function (exists) {
+      if(!exists){
+        fs.mkdirSync('output/'+dirName);
+        console.log("Didn't exist, but now created");
+      }
+    });
+    if(type == 'application/zip'){
+      fs.createReadStream(request.files.file.path).pipe(unzip.Extract({ path: 'output/'+dirName }));
+    }
+    else{
+      fs.createReadStream(request.files.file.path).pipe({path: 'output/'+dirName});
+    }
 
-    //   var file = getDirectoryName(request.files.file.name);
-    //   var dir = __dirname+'/output/'+dirName+'/'+file;
+    var file = getDirectoryName(request.files.file.name);
+    var dir = __dirname+'/output/'+dirName+'/'+file;
 
-    //   var userId = request.session.userId;
-    //   var i = 0;
-    //   fs.readdir('output/'+dirName, function(err,list){
-    //     if (err){
-    //       console.log('Err :'+err);
-    //     }
-    //     else{
-    //       list.forEach(function(item){
-    //         i++;
-    //         console.log((i)+')'+item);
-    //       });
-    //       console.log("Total Dirs: "+ (i+1));
-    //       var count = i+1;
-    //       DB.addAccountDetails({
-    //         count  : count,
-    //         userId : userId 
-    //       },
-    //         function(err){
-    //           console.log('Error in adding number '+err);
-    //       });
-    //     }
-    //   });
-    //   response.end();
-    // }
+    var userId = request.session.userId;
+    var i = 0;
+    fs.readdir('output/'+dirName, function(err,list){
+      if (err){
+        console.log('Err :'+err);
+      }
+      else{
+        list.forEach(function(item){
+          i++;
+          console.log((i)+')'+item);
+        });
+        console.log("Total Dirs: "+ (i+1));
+        var count = i+1;
+        DB.addAccountDetails({
+          count  : count,
+          userId : userId 
+        },
+          function(err){
+            console.log('Error in adding number '+err);
+        });
+      }
+    });
+    response.end();
+
   });
 
   function getDirectoryName(file) {
       var i = file.lastIndexOf('.');
       return (i < 0) ? '' : file.substr(0,i);
+  }
+
+  function createDirectoryname(email){
+    var i = email.lastIndexOf('@');
+    return (i < 0) ? '' : email.substr(0,i);
   }
 }

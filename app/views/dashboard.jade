@@ -1,5 +1,6 @@
 extends layouts/default
-
+block title
+  title Dashboard
 block main
   h1= Temp
 
@@ -12,6 +13,24 @@ block content
       .col-sm-6.widget.widget50
         .panel
           | Title
+        .panel-body
+          if sites == null || sites.length == 0
+            | No sites
+          else
+            .table-responsive
+              table.tabel.table-bordered
+                thead
+                  tr
+                    th Number
+                    th Sites
+                tbody
+                  for site ,i in sites
+                    tr
+                      td
+                        | #{i+1}
+                      td
+                        | #{site}
+
       .col-sm-6.widget.widget50(style='margin-left:2%;')
         | sdshjd
     br

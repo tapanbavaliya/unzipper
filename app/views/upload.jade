@@ -1,16 +1,12 @@
 extends layouts/default
-
-block main
-  h1= Temp
+block title 
+  title Upload
 
 block content
   div.container
     .row
       h2 File Upload
     p Hi,&nbsp;
-      strong #{ session.data.name.first }.
+      strong #{ session.data.name }.
     p Now hosting your website is much simpler then you  thought. You just need to upload your website's zipped file and we'll manage everything for you.
-    if (item.plan == 'paid')
-      form(action='upload', name='UploadForm', method='post', enctype='multipart/form-data', class='dropzone', id='form')
-    else if (item.plan == 'free' && (item.count == 0 || item.count == undefined))
-      form(action='upload', name='UploadForm', method='post', enctype='multipart/form-data', class='dropzone', id='form')
+    form(action='upload', name='UploadForm', method='post', enctype='multipart/form-data', class='dropzone', id='form')
