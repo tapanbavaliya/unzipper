@@ -21,6 +21,7 @@ var db = new Db(dbName, new Server(dbHost, dbPort, {auto_reconnect: true}), {w: 
 });
 var users = db.collection('users');
 var account = db.collection('account');
+var sites = db.collection('sites');
 
 
 //Users collection's methods

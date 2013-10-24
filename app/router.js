@@ -1,6 +1,7 @@
 var fs = require('fs-extra');
 var unzip = require('unzip');
-
+var async = require('async');
+var path = require('path');
 var DB = require('./models/db-handle');
 
 module.exports = function(app) {
@@ -89,23 +90,19 @@ module.exports = function(app) {
 
   app.get('/dashboard', function(req,res){
     //Code to get all site details
-    res.render('dashboard');
-  });
 
-  app.get('/upload', function(req,res){
-    if (req.session.email == null){
-      res.redirect('/login');
-    }
-    else{
-      DB.getAccountDetailsByUserId(req.session.userId, function(err,item){
-        if(err){
-          console.log('Err: '+err);
-        }
-        else{
-          res.render('upload',{item : item});
-        }
-      });
-    }
+    var dirName = req.session.name;
+    var sites = [];
+    fs.readdir('output/'+dirName, function(err,list){
+      if (!err){
+        list.forEach(function(item){
+          console.log(item);
+          sites.push(item);
+        });
+      }
+      console.log("Sites: "+sites);
+      res.render('dashboard',{sites : sites});
+    });
   });
 
   app.get('/account', function(req, res){
@@ -154,6 +151,22 @@ module.exports = function(app) {
     }
   });
 
+  app.get('/upload', function(req,res){
+    if (req.session.email == null){
+      res.redirect('/login');
+    }
+    else{
+      DB.getAccountDetailsByUserId(req.session.userId, function(err,item){
+        if(err){
+          console.log('Err: '+err);
+        }
+        else{
+          res.render('upload',{item : item});
+        }
+      });
+    }
+  });
+
   app.post('/upload', function(request, response){
     console.log('Path: '+request.files.file.path);
     var path = request.files.file.path;
@@ -169,7 +182,12 @@ module.exports = function(app) {
         console.log("Didn't exist, but now created");
       }
     });
-    fs.createReadStream(request.files.file.path).pipe(unzip.Extract({ path: 'output/'+dirName }));
+    if(type == 'application/zip'){
+      fs.createReadStream(request.files.file.path).pipe(unzip.Extract({ path: 'output/'+dirName }));
+    }
+    else{
+      fs.createReadStream(request.files.file.path).pipe({path: 'output/'+dirName});
+    }
 
     var file = getDirectoryName(request.files.file.name);
     var dir = __dirname+'/output/'+dirName+'/'+file;

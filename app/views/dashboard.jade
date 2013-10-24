@@ -12,6 +12,12 @@ block content
       .col-sm-6.widget.widget50
         .panel
           | Title
+        .panel-body
+          ul
+            for site in sites
+              li= site
+            else
+              li No site!
       .col-sm-6.widget.widget50(style='margin-left:2%;')
         | sdshjd
     br
