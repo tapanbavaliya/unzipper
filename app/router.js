@@ -90,7 +90,7 @@ module.exports = function(app) {
 
   app.get('/dashboard', function(req,res){
     //Code to get all site details
-
+    var i,totalSizeBytes;
     var dirName = req.session.name;
     var sites = [];
     fs.readdir('output/'+dirName, function(err,list){
@@ -100,10 +100,42 @@ module.exports = function(app) {
           sites.push(item);
         });
       }
-      console.log("Sites: "+sites);
+
+      readSizeRecursive('output/'+dirName, function(err,item){
+        item = (item/(1024*1024));
+        console.log('Total Space:'+Math.round(item)+'MB');
+      });
+
+      console.log('Sites: '+sites);
       res.render('dashboard',{sites : sites});
     });
   });
+
+  function readSizeRecursive(item, cb) {
+    fs.lstat(item, function(err, stats) {
+      var total = stats.size;
+      if (!err && stats.isDirectory()) {
+        fs.readdir(item, function(err, list) {
+          console.log("readSizeRecursive :"+ item);
+          async.forEach(
+            list,
+            function(diritem, callback) {
+              readSizeRecursive(path.join(item, diritem), function(err, size) {
+                total += size;
+                callback(err);
+              });
+            },
+            function(err) {
+              cb(err, total);
+            }
+          );
+        });
+      }
+      else {
+        cb(err, total);
+      }
+    });
+  }
 
   app.get('/account', function(req, res){
     if( req.session.email == null )
