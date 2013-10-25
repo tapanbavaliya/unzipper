@@ -1,0 +1,20 @@
+!!! 5
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    title HTML5 Drag and Drop Multiple File Uploader | Script Tutorials
+    link(href='../public/css/main.css', rel='stylesheet', type='text/css')
+    //if lt IE 9
+      script(src='http://html5shiv.googlecode.com/svn/trunk/html5.js')
+  body
+    .container
+      .upload_form_cont
+        #dropArea Drop Area
+        .info
+          div
+            | Files left:
+            span#count 0
+          h2 Result:
+          #result
+          canvas(width='500', height='20')
+    script(src='../public/js/script.js')

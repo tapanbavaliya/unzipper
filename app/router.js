@@ -169,6 +169,12 @@ module.exports = function(app) {
     res.redirect('/account');
   });
 
+  app.get('/test', function(req, res){
+    res.render('test');
+  });
+
+
+
   app.post('/editPass', function(req, res){
     if(req.param('pwd') != req.param('c_pwd'))
     {
@@ -187,6 +193,22 @@ module.exports = function(app) {
         )
       res.redirect('/account');
     }
+  });
+
+
+  app.get('/demo', function(req, res){
+    res.render('demo');
+  });
+
+  app.post('/demoUpload', function(req,res){
+    console.log("Value : "+req.get('path'));
+    req.on('data', function (chunk) {
+      fs.writeFile('output/tmp', chunk, function(err){
+        if(err)
+          console.log(err);
+      });
+    });
+
   });
 
   app.get('/upload', function(req,res){
