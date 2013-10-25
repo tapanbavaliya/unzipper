@@ -159,6 +159,7 @@ module.exports = function(app) {
   });
 
   app.post('/editName', function(req, res){
+    req.session.name = req.param('name');
     DB.editAccountNames(req.session.email, 
       {name  : req.param('name')},
       function(err){

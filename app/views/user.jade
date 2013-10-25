@@ -26,28 +26,24 @@ block title
     {
       var btnEdit = document.getElementById('btnEdit');
       var edit = document.getElementById('edit');
-      var fname = document.getElementById('fname');
-      var lname = document.getElementById('lname');
+      var name = document.getElementById('name');
       var cancle = document.getElementById('cancle');
       btnEdit.style.display = 'none';
       edit.style.display = 'block';
       cancle.style.display = 'block';
-      fname.readOnly = false;
-      lname.readOnly = false;
-      fname.focus();
+      name.readOnly = false;
+      name.focus();
     }
     function cancleName()
     {
       var btnEdit = document.getElementById('btnEdit');
       var edit = document.getElementById('edit');
-      var fname = document.getElementById('fname');
-      var lname = document.getElementById('lname');
+      var name = document.getElementById('name');
       var cancle = document.getElementById('cancle');
       cancle.style.display = 'none';
       btnEdit.style.display = 'block';
       edit.style.display = 'none';
-      fname.readOnly = true;
-      lname.readOnly = true;
+      name.readOnly = true;
     }
 
     function validatePass()
@@ -87,7 +83,7 @@ block content
       .col-lg-2.pagination-right
         label(for='name') Name:
       .col-lg-4
-        input(id='fname', type='text', name='name', value='#{item.name}', class='form-control', readonly)
+        input(id='name', type='text', name='name', value='#{item.name}', class='form-control', readonly)
       //- .col-lg-3
       //-   input(id='lname', type='text', name='lname', value='#{item.name.last}', class='form-control', readonly)
       .col-lg-2
