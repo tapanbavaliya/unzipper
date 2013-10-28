@@ -201,15 +201,43 @@ module.exports = function(app) {
     res.render('demo');
   });
 
-  app.post('/demoUpload', function(req,res){
-    console.log("Value : "+req.get('path'));
-    req.on('data', function (chunk) {
-      fs.writeFile('output/tmp', chunk, function(err){
-        if(err)
-          console.log(err);
-      });
+  app.get('/dashboard2', function(req, res){
+    if(req.session.email == null)
+    {
+      res.redirect('/login');
+    }
+
+    DB.getSiteListByEmail(req.session.email, function(err, data){
+      console.log(data);
+      if(err)
+      {
+        console.log(err);
+      }
+      res.render('dashboard2', {data:data});
     });
 
+  });
+
+
+  app.post('/renameSite', function(req,res){
+    DB.updateSite(req.session.email, req.body.site_name, function(err){
+      if(err)
+      {
+        console.log(err);
+      }
+    });
+    res.redirect('/dashboard2');
+  });
+
+  app.post('/demoUpload', function(req,res){
+    console.log("Yes...!");
+    req.on('data', function (chunk) {
+      console.log(chunk);
+      // fs.writeFile('output/tmp', chunk, function(err){
+      //   if(err)
+      //     console.log(err);
+      // });
+    });
   });
 
   app.get('/upload', function(req,res){

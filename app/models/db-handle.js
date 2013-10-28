@@ -102,6 +102,46 @@ exports.userInfoByEmail = function(email, callback)
   });
 }
 
+
+exports.getSiteListByEmail = function(email, callback)
+{
+  // sites.findOne({'user_email':email}, function(err, data){
+  //   if(err)
+  //   {
+  //     console.log(err);
+  //   }
+  //   callback(null, data);
+  // });
+
+  sites.find({'user_email':email}).toArray(function(err, data){
+    if(err)
+    {
+      console.log(err);
+    }
+    callback(null, data);
+  });
+
+
+  // sites.find({'user_email': email}).toArray(function(data){
+  //   console.log("Email := "+email);
+  //   callback(null,data);
+  // });  
+}
+
+exports.updateSite = function(email, siteName, callback)
+{
+  sites.update({'user_email':email},
+    {
+      $set : { site_name : siteName }
+    },
+    function(err)
+    {
+      if(err)
+        console.log(err);
+    }
+  );
+}
+
 exports.editAccountNames = function(email, data, callback)
 {
   users.update({email:email}, 
