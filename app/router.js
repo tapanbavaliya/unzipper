@@ -86,6 +86,7 @@ module.exports = function(app) {
         res.send('A/c created', 200);
       }
     });
+    res.redirect('/login');
   });
 
   app.get('/dashboard', function(req,res){
@@ -208,7 +209,6 @@ module.exports = function(app) {
     }
 
     DB.getSiteListByEmail(req.session.email, function(err, data){
-      console.log(data);
       if(err)
       {
         console.log(err);
@@ -220,7 +220,7 @@ module.exports = function(app) {
 
 
   app.post('/renameSite', function(req,res){
-    DB.updateSite(req.session.email, req.body.site_name, function(err){
+    DB.updateSite(req.body.site_id, req.body.site_name, function(err){
       if(err)
       {
         console.log(err);

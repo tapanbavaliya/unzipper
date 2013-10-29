@@ -14,16 +14,16 @@ html
       script(src='../../assets/js/respond.min.js')
     script
       function renameSite (id){
-        var site_lbl = document.getElementById("site_lbl");
-        var site_div = document.getElementById("site_div");
+        var site_lbl = document.getElementById("site_lbl"+id);
+        var site_div = document.getElementById("site_div"+id);
         site_lbl.style.display = "none";
         site_div.style.display = "block";
-        document.getElementById("site_name").focus();
+        document.getElementById("site_name"+id).focus();
       }
-      function removeTxt()
+      function removeTxt(id)
       {
-        var site_lbl = document.getElementById("site_lbl");
-        var site_div = document.getElementById("site_div");
+        var site_lbl = document.getElementById("site_lbl"+id);
+        var site_div = document.getElementById("site_div"+id);
         site_lbl.style.display = "block";
         site_div.style.display = "none";
       }
@@ -41,11 +41,11 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand.visible-xs(href='#', style='color: white; font-size: 3em;') EASY HOST
+          a.navbar-brand.visible-xs(href='/', style='color: white; font-size: 3em;') EASY HOST
         .collapse.navbar-collapse.navbar-ex1-collapse
           .container
             .col-lg-6.visible-lg.visible-md.visible-sm
-              a.navbar-brand(href='homepage.html', style='color: white; font-size: 3em;') EASY HOST
+              a.navbar-brand(href='/', style='color: white; font-size: 3em;') EASY HOST
             .col-lg-2.pull-right
               h1(style='color: white; font-size: 2em; margin-top: 11px;') Dashboard
     br
@@ -55,133 +55,75 @@ html
       each item in data
         if (item.plan_type == "free")
           .col-lg-12.col-md-12.col-sm-12.col-xs-12.clearfix.freeplan
-            .col-lg-3.col-md-4.col-sm-5.col-xs-12
-              img.projectimage(src='../public/img/courseloads.png', alt='')
+            .col-lg-3.col-md-4.col-sm-5.col-xs-12(style='margin-right: -60px; margin-top: 3px;')
+              a(href=item.url, target='_blank')
+                img.projectimage(src='../public/img/courseloads2.png', alt='')
             .visible-xs
               br
-            .col-lg-9.col-md-8.col-sm-7.col-xs-12
-              h3#site_lbl.h3custom #{item.site_name}
-              #site_div(style='display: none; margin-top: -2px;')
+            .col-lg-9.col-md-8.col-sm-7.col-xs-12(style='margin-top: 5px;')
+              h3(id="site_lbl"+item._id).h3custom #{item.site_name}
+              div(id='site_div'+item._id,style='display: none; margin-top: -2px;')
                 form(action="renameSite", method="POST")
-                  input.form-control.formcustom(type='text', id='site_name', name='site_name', value='#{item.site_name}', style='width: 50%; float: left;')
+                  input.form-control.formcustom(type='text', id='site_name'+item._id, name='site_name', value='#{item.site_name}', style='width: 50%; float: left;')
+                  input.form-control(type='hidden', name='site_id', value='#{item._id}')
                   //- input(type="submit", id="update", value="Change", class="btn btn-success",  style='float: left;')
-                  span.glyphicon.glyphicon-remove-circle.btn-lg(onclick='removeTxt()', style='cursor: pointer; font-size: 22px; margin-top: -8px; margin-bottom: 4px;')
-              a.acustom.clearfix(href='http://courseloads.improwised.com/', target="_blank")
-                .linkSpace| #{item.url}
-              br
-              a#edit.buttoncustom(href='#', onclick='renameSite("'+item._id+'")')
-                span.glyphicon.glyphicon-pencil
-                | &nbsp;Rename
-              a.buttoncustom(href='#', data-toggle='modal', data-target='#myModal')
+                  span.glyphicon.glyphicon-remove-circle.btn-lg(onclick='removeTxt("'+item._id+'")', style='cursor: pointer; font-size: 22px;margin-top: -9px; margin-bottom: 4px;')
+              a.acustom.clearfix(href='http://courseloads.improwised.com/', target='_blank')
+                p.linkSpace #{item.url}
+              a#edit.buttoncustom()
                 span.glyphicon.glyphicon-edit
                 | &nbsp;Edit
-              a.buttoncustom(href='#', data-toggle='modal', data-target='#myModal')
+              a.buttoncustom(onclick='renameSite("'+item._id+'")')
+                span.glyphicon.glyphicon-pencil
+                | &nbsp;Rename
+              a.buttoncustom(htrf='#', data-toggle='modal', data-target='#myModal')
                 span.glyphicon.glyphicon-plus
                 | &nbsp;Get Domain
               .visible-xs
                 br
-              a#button.buttoncustom(href='#')
+              a.buttoncustom(href='history.html')
                 span.glyphicon.glyphicon-list-alt
                 | &nbsp;History
-              a.buttoncustom(href='#', data-toggle='modal', data-target='#myModal')
+              a.buttoncustom(htrf='#', data-toggle='modal', data-target='#myModal')
                 span.glyphicon.glyphicon-remove
                 | &nbsp;Delete
+              div(style='margin-top: 8px; color: #a2a2a2;') Date : 5 / 5 / 2013
         else
           .col-lg-12.col-md-12.col-sm-12.col-xs-12.clearfix.paidplan
-            .col-lg-3.col-md-4.col-sm-5.col-xs-12
-              img.projectimage(src='../public/img/courseloads.png', alt='')
+            .col-lg-3.col-md-4.col-sm-5.col-xs-12(style='margin-right: -60px; margin-top: 3px;')
+              a(href=item.url, target='_blank')
+                img.projectimage(src='../public/img/courseloads2.png', alt='')
             .visible-xs
               br
-            .col-lg-9.col-md-8.col-sm-7.col-xs-12
-              h3#tpn1.h3custom #{item.site_name}
-              #tpn2(style='display: none; margin-top: -2px;')
+            .col-lg-9.col-md-8.col-sm-7.col-xs-12(style='margin-top: 5px;')
+              h3(id="site_lbl"+item._id).h3custom #{item.site_name}
+              div(id='site_div'+item._id,style='display: none; margin-top: -2px;')
                 form(action="renameSite", method="POST")
-                  input.form-control.formcustom(type='text', id='site_name', name='site_name', value='#{item.site_name}', style='width: 50%; float: left;')
+                  input.form-control.formcustom(type='text', id='site_name'+item._id, name='site_name', value='#{item.site_name}', style='width: 50%; float: left;')
+                  input.form-control(type='hidden', name='site_id', value='#{item._id}')
                   //- input(type="submit", id="update", value="Change", class="btn btn-success",  style='float: left;')
-                  span.glyphicon.glyphicon-remove-circle.btn-lg(onclick='removeTxt()', style='cursor: pointer; font-size: 22px; margin-top: -8px; margin-bottom: 4px;')
-              a.acustom.clearfix(href='http://courseloads.improwised.com/')
-                .linkSpace| #{item.url}
-              br
-              a#edit.buttoncustom(href='#', onclick='renameSite()')
-                span.glyphicon.glyphicon-pencil
-                | &nbsp;Rename
-              a.buttoncustom(href='#', data-toggle='modal', data-target='#myModal')
+                  span.glyphicon.glyphicon-remove-circle.btn-lg(onclick='removeTxt("'+item._id+'")', style='cursor: pointer; font-size: 22px;margin-top: -9px; margin-bottom: 4px;')
+              a.acustom.clearfix(href='http://courseloads.improwised.com/', target='_blank')
+                p.linkSpace #{item.url}
+              a#edit.buttoncustom()
                 span.glyphicon.glyphicon-edit
                 | &nbsp;Edit
-              a.buttoncustom(href='#', data-toggle='modal', data-target='#myModal')
+              a.buttoncustom(onclick='renameSite("'+item._id+'")')
+                span.glyphicon.glyphicon-pencil
+                | &nbsp;Rename
+              a.buttoncustom(htrf='#', data-toggle='modal', data-target='#myModal')
                 span.glyphicon.glyphicon-plus
                 | &nbsp;Get Domain
               .visible-xs
                 br
-              a#button.buttoncustom(href='#')
+              a.buttoncustom(href='history.html')
                 span.glyphicon.glyphicon-list-alt
                 | &nbsp;History
-              a.buttoncustom(href='#', data-toggle='modal', data-target='#myModal')
+              a.buttoncustom(htrf='#', data-toggle='modal', data-target='#myModal')
                 span.glyphicon.glyphicon-remove
                 | &nbsp;Delete
+              div(style='margin-top: 8px; color: #a2a2a2;') Date : 5 / 5 / 2013
 
-
-
-      .col-lg-12.col-md-12.col-sm-12.col-xs-12.clearfix.freeplan
-        .col-lg-3.col-md-4.col-sm-5.col-xs-12(style='margin-right: -60px; margin-top: 3px;')
-          img.projectimage(src='../public/img/courseloads2.png', alt='')
-        .visible-xs
-          br
-        .col-lg-9.col-md-8.col-sm-7.col-xs-12(style='margin-top: 5px;')
-          h3#tpn1.h3custom Courseloads
-          #tpn2(style='display: none; margin-top: -2px;')
-            input#tpn3.form-control.formcustom(type='text', value='1. courseloads', style='width: 70%; float: left;')
-            span.glyphicon.glyphicon-remove-circle.btn-lg(onclick='removeTxt()', style='cursor: pointer; font-size: 22px; margin-top: -8px; margin-bottom: 4px;')
-          a.acustom.clearfix(href='http://courseloads.improwised.com/')
-            p http://courseloads.improwised.com/
-          a#edit.buttoncustom(href='#', onclick='test()')
-            span.glyphicon.glyphicon-edit
-            | Edit
-          a.buttoncustom(htrf='#', data-toggle='modal', data-target='#myModal')
-            span.glyphicon.glyphicon-pencil
-            | Rename
-          a.buttoncustom(htrf='#', data-toggle='modal', data-target='#myModal')
-            span.glyphicon.glyphicon-plus
-            | Get Domain
-          .visible-xs
-            br
-          a.buttoncustom(href='history.html')
-            span.glyphicon.glyphicon-list-alt
-            | History
-          a.buttoncustom(htrf='#', data-toggle='modal', data-target='#myModal')
-            span.glyphicon.glyphicon-remove
-            | Delete
-          div(style='margin-top: 8px; color: #a2a2a2;') Date : 5 / 5 / 2013
-
-      //- .col-lg-12.col-md-12.col-sm-12.col-xs-12.clearfix.paidplan
-      //-   .col-lg-3.col-md-4.col-sm-5.col-xs-12
-      //-     img.projectimage(src='../public/img/courseloads.png', alt='')
-      //-   .visible-xs
-      //-     br
-      //-   .col-lg-9.col-md-8.col-sm-7.col-xs-12
-      //-     h3.h3custom(style='letter-spacing: 1px;') 1. courseloads
-      //-     a.acustom(href='http://courseloads.improwised.com/')
-      //-       p(style='letter-spacing: 1px;') http://courseloads.improwised.com/
-      //-     a.buttoncustom(htrf='#', data-toggle='modal', data-target='#myModal')
-      //-       span.glyphicon.glyphicon-edit
-      //-       | Edit
-      //-     a.buttoncustom(htrf='#', data-toggle='modal', data-target='#myModal')
-      //-       span.glyphicon.glyphicon-pencil
-      //-       | Rename
-      //-     a.buttoncustom(htrf='#', data-toggle='modal', data-target='#myModal')
-      //-       span.glyphicon.glyphicon-plus
-      //-       | Get Domain
-      //-     .visible-xs
-      //-       br
-      //-     a.buttoncustom(htrf='#', data-toggle='modal', data-target='#myModal')
-      //-       span.glyphicon.glyphicon-list-alt
-      //-       | History
-      //-     a.buttoncustom(htrf='#', data-toggle='modal', data-target='#myModal')
-      //-       span.glyphicon.glyphicon-remove
-      //-       | Delete
-      
-      // model views
-      // edit model
       #edit.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
         .modal-dialog.modal-dialogcustom
           .modal-content
@@ -201,11 +143,6 @@ html
             .modal-footer
               button.btn.btn-default(type='button', data-dismiss='modal') Close
               button.btn.btn-primary(type='button') Save changes
-          // /.modal-content
-        // /.modal-dialog
-      // /.modal
-      // end edit model
-      // Modal
       #myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
         .modal-dialog
           .modal-content
@@ -217,45 +154,5 @@ html
             .modal-footer
               button.btn.btn-default(type='button', data-dismiss='modal') Close
               button.btn.btn-danger(type='button') Delete
-          // /.modal-content
-        // /.modal-dialog
-      // /.modal
-      // end model view
-    // jQuery (necessary for Bootstrap's JavaScript plugins)
     script(src='http://code.jquery.com/jquery.js')
-    // Include all compiled plugins (below), or include individual files as needed
     script(src='http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js')
-    //- script(type="text/javaScript").
-    //-   //- $.ajax(
-    //-   //-   {
-    //-   //-     method : "POST",
-    //-   //-     url: "renameSite",
-    //-   //-     data: { "data" : $('#site_name').value() },
-    //-   //-     data
-    //-   //-     success : function(data)
-    //-   //-     {
-    //-   //-       $('#site_name').append("test");
-    //-   //-     }
-    //-   //-   });
-    //-   function loadXMLDoc()
-    //-   {
-    //-   var xmlhttp;
-    //-   if (window.XMLHttpRequest)
-    //-     {// code for IE7+, Firefox, Chrome, Opera, Safari
-    //-     xmlhttp=new XMLHttpRequest();
-    //-     }
-    //-   else
-    //-     {// code for IE6, IE5
-    //-     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-    //-     }
-    //-   xmlhttp.onreadystatechange=function()
-    //-     {
-    //-     if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    //-       {
-    //-       document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
-    //-       }
-    //-     }
-    //-     xmlhttp.open("POST","renameSite",true);
-    //-     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    //-     xmlhttp.send("site_name="+document.getElementById('site_name').value);
-    //-   }
