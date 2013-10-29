@@ -93,11 +93,6 @@ exports.userInfoByEmail = function(email, callback)
     {
       console.log('Error : '+err);
     }
-    // account.findOne({userId: item._id},function(error, data){
-    //   item = item+data.plan;
-    //   console.log('Item Data:'+data.plan);
-    // });
-    console.log(item);
     callback(null, item);
   });
 }
@@ -105,14 +100,6 @@ exports.userInfoByEmail = function(email, callback)
 
 exports.getSiteListByEmail = function(email, callback)
 {
-  // sites.findOne({'user_email':email}, function(err, data){
-  //   if(err)
-  //   {
-  //     console.log(err);
-  //   }
-  //   callback(null, data);
-  // });
-
   sites.find({'user_email':email}).toArray(function(err, data){
     if(err)
     {
@@ -121,16 +108,15 @@ exports.getSiteListByEmail = function(email, callback)
     callback(null, data);
   });
 
-
   // sites.find({'user_email': email}).toArray(function(data){
   //   console.log("Email := "+email);
   //   callback(null,data);
   // });  
 }
 
-exports.updateSite = function(email, siteName, callback)
+exports.updateSite = function(data_id, siteName,callback)
 {
-  sites.update({'user_email':email},
+  sites.update({ _id : ObjectID(data_id) },
     {
       $set : { site_name : siteName }
     },
